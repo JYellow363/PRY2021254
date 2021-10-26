@@ -2,6 +2,7 @@ package pe.edu.upc.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Guardian {
 	@Column(length = 80, nullable = false)
 	private String email;
 	
-	@OneToOne(mappedBy="guardian")
+	@OneToOne(cascade = CascadeType.ALL)
 	private UserLogin userLogin;
 	
 }

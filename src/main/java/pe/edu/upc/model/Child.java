@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,35 +28,37 @@ public class Child {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idChild;
-	
+
 	@Column(length = 80, nullable = false)
 	private String names;
-	
+
 	@Column(length = 80, nullable = false)
 	private String lastNames;
-	
+
 	@Column(nullable = false)
 	private Date birthday;
-	
+
 	@Column(length = 10, nullable = false)
 	private String gender;
-	
+
 	@Column(length = 20, nullable = false)
 	private String asdLevel;
-	
+
 	@Column(nullable = false)
 	private String avatar;
-	
+
 	@ManyToMany(mappedBy="children")
 	private List<Symptom> symptoms;
-	
+
 	@ManyToOne
 	private Guardian guardian;
-	
+
 	@OneToMany
 	private List<Level> favoriteLevels;
-	
+
 	@OneToMany
 	private List<Topic> favoriteTopics;
-	
+
+	@OneToOne(mappedBy = "child")
+	private Specialist specialist;
 }

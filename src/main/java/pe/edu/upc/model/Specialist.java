@@ -1,11 +1,12 @@
 package pe.edu.upc.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,18 +18,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Level {
-
+public class Specialist {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int idLevel;
+	private int idSpecialist;
 	
-	@Column(length = 60, nullable = false)
-	private String description;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Child child;
 	
-	@ManyToOne
-	private Topic topic;
+	@Column(length = 80, nullable = false)
+	private String names;
 	
-	@Column(nullable = false)
-	private String video;
+	@Column(length = 80, nullable = false)
+	private String lastNames;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private UserLogin userLogin;
 }

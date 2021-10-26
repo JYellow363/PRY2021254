@@ -2,6 +2,7 @@ package pe.edu.upc.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,6 @@ public class Symptom {
 	@Column(nullable = false)
 	private String description;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Child> children;
 }
