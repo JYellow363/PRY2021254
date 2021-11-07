@@ -1,7 +1,5 @@
 package pe.edu.upc.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +21,8 @@ public class GuardianServiceImpl implements IGuardianService {
 
 	@Override
 	public int save(GuardianCreateDto guardianCreateDto) {
-		Optional<UserLogin> userLogin = userLoginRepository.findByUsername(guardianCreateDto.getUsername());
-		if (userLogin.isPresent())
+		UserLogin userLogin = userLoginRepository.findByUsername(guardianCreateDto.getUsername());
+		if (userLogin == null)
 			return Constants.ERROR_DUPLICATE;
 
 		Guardian guardian = convert(guardianCreateDto);

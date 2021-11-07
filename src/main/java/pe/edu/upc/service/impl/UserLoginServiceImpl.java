@@ -1,7 +1,5 @@
 package pe.edu.upc.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +16,10 @@ public class UserLoginServiceImpl implements IUserLoginService {
 
 	@Override
 	public int login(UserLoginDto userLoginDto) {
-		Optional<UserLogin> userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
-		if(userLogin.isEmpty())
+		UserLogin userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
+		if(userLogin == null)
 			return Constants.ERROR_EXIST;
-		if(!userLogin.get().getPassword().equals(userLoginDto.getPassword()))
+		if(!userLogin.getPassword().equals(userLoginDto.getPassword()))
 			return Constants.ERROR_PASSWORD;
 		return	Constants.SUCCESSFULLY;
 	}
