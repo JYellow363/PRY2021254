@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import pe.edu.upc.model.Child;
 
 @Repository
-public interface IChildRespository extends JpaRepository<Child, Integer>{
+public interface IChildRepository extends JpaRepository<Child, Integer>{
 
 }

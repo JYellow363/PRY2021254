@@ -3,6 +3,7 @@ package pe.edu.upc.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,6 +60,6 @@ public class Child {
 	@OneToMany
 	private List<Topic> favoriteTopics;
 
-	@OneToOne(mappedBy = "child")
+	@OneToOne(mappedBy = "child", cascade = CascadeType.ALL)
 	private Specialist specialist;
 }
