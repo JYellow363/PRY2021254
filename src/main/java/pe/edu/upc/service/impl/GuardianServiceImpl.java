@@ -22,7 +22,7 @@ public class GuardianServiceImpl implements IGuardianService {
 	@Override
 	public int save(GuardianCreateDto guardianCreateDto) {
 		UserLogin userLogin = userLoginRepository.findByUsername(guardianCreateDto.getUsername());
-		if (userLogin == null)
+		if (userLogin != null)
 			return Constants.ERROR_DUPLICATE;
 
 		Guardian guardian = convert(guardianCreateDto);
