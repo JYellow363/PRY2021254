@@ -2,7 +2,6 @@ package pe.edu.upc.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,14 +20,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Symptom {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idSymptom;
-	
+
 	@Column(nullable = false)
 	private String description;
-	
-	@ManyToMany(cascade = CascadeType.ALL)
+
+	@ManyToMany(mappedBy = "symptoms")
 	private List<Child> children;
 }

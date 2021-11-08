@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.upc.dto.GuardianCreateDto;
 import pe.edu.upc.dto.GuardianDto;
+import pe.edu.upc.dto.GuardianUpdateDto;
 import pe.edu.upc.dto.ResponseDto;
 import pe.edu.upc.dto.UserLoginDto;
 import pe.edu.upc.service.IGuardianService;
@@ -42,8 +44,10 @@ public class GuardianController {
 		response.setIdResponse(result);
 		if (result == Constants.SUCCESSFULLY)
 			response.setMessage("Registro exitoso");
-		else
+		else if (result == Constants.ERROR_DUPLICATE)
 			response.setMessage("Nombre de usuario duplicado");
+		else
+			response.setMessage("Error al registrar");
 		return ResponseEntity.ok(response);
 	}
 
@@ -60,4 +64,19 @@ public class GuardianController {
 			response.setMessage("Login exitoso");
 		return ResponseEntity.ok(response);
 	}
+
+	@PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> update(@RequestBody GuardianUpdateDto guardian) {
+		int result = guardianService.update(guardian);
+		ResponseDto response = new ResponseDto();
+		response.setIdResponse(result);
+		if (result == Constants.SUCCESSFULLY)
+			response.setMessage("Actualización exitosa");
+		else if (result == Constants.ERROR_PASSWORD)
+			response.setMessage("Contraseña incorrecta");
+		else
+			response.setMessage("Error al actualizar");
+		return ResponseEntity.ok(response);
+	}
+
 }

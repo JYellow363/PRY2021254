@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
+import pe.edu.upc.dto.ChildUpdateDto;
 import pe.edu.upc.model.Child;
 import pe.edu.upc.model.Guardian;
 import pe.edu.upc.model.Level;
@@ -35,13 +36,14 @@ public class ChildServiceImpl implements IChildService {
 
 	@Autowired
 	private IGuardianRepository guardianRepository;
-	
+
 	@Autowired
 	private ISpecialistRepository specialistRepository;
 
 	@Override
 	public List<ChildDto> findByGuardianIdGuardian(int idGuardian) {
-		return null;
+		List<ChildDto> children = convert(childRepository.findByGuardianIdGuardian(idGuardian));
+		return children;
 	}
 
 	@Override
@@ -65,6 +67,28 @@ public class ChildServiceImpl implements IChildService {
 		return Constants.SUCCESSFULLY;
 	}
 
+	@Transactional
+	@Override
+	public int update(ChildUpdateDto childUpdateDto) {
+		Child child = childRepository.findById(childUpdateDto.getIdChild()).get();
+		child = convert(child, childUpdateDto);
+		Child childSave = childRepository.save(child);
+		if (childSave == null)
+			return Constants.ERROR_BD;
+		return Constants.SUCCESSFULLY;
+	}
+
+	@Transactional
+	@Override
+	public int delete(int idChild) {
+		try {
+			childRepository.deleteById(idChild);
+		} catch (Exception e) {
+			return Constants.ERROR_BD;
+		}
+		return Constants.SUCCESSFULLY;
+	}
+
 	private Child convert(ChildCreateDto childCreateDto) {
 		Child child = new Child();
 		child.setNames(childCreateDto.getNames());
@@ -73,14 +97,14 @@ public class ChildServiceImpl implements IChildService {
 		child.setAvatar(childCreateDto.getAvatar());
 		child.setBirthday(childCreateDto.getBirthday());
 		child.setGender(childCreateDto.getGender());
-		child.setSymptoms(new ArrayList<Symptom>());
-
+	
+		List<Symptom> symptoms = new ArrayList<Symptom>();
 		Symptom symptom = new Symptom();
 		for (int i = 0; i < childCreateDto.getSymptoms().length; i++) {
 			symptom = symptomRepository.findById(childCreateDto.getSymptoms()[i]).get();
-			child.getSymptoms().add(symptom);
+			symptoms.add(symptom);
 		}
-
+		child.setSymptoms(symptoms);
 		Guardian guardian = guardianRepository.findById(childCreateDto.getIdGuardian()).get();
 		child.setGuardian(guardian);
 		child.setFavoriteLevels(new ArrayList<Level>());
@@ -115,5 +139,24 @@ public class ChildServiceImpl implements IChildService {
 		for (int i = 0; i < children.size(); i++)
 			childrenDto.add(convert(children.get(i)));
 		return childrenDto;
+	}
+
+	private Child convert(Child child, ChildUpdateDto childUpdateDto) {
+		child.setNames(childUpdateDto.getNames());
+		child.setLastNames(childUpdateDto.getLastNames());
+		child.setAsdLevel(childUpdateDto.getAsdLevel());
+		child.setAvatar(childUpdateDto.getAvatar());
+		child.setBirthday(childUpdateDto.getBirthday());
+		child.setGender(childUpdateDto.getGender());
+		System.out.println(childUpdateDto.getSymptoms().length);
+		List<Symptom> symptoms = new ArrayList<Symptom>();
+		Symptom symptom = new Symptom();
+		for (int i = 0; i < childUpdateDto.getSymptoms().length; i++) {
+			symptom = symptomRepository.findById(childUpdateDto.getSymptoms()[i]).get();
+			symptoms.add(symptom);
+		}
+		child.setSymptoms(symptoms);
+		System.out.println(child.getSymptoms().size());
+		return child;
 	}
 }

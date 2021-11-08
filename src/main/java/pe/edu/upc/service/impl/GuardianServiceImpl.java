@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.upc.dto.GuardianCreateDto;
 import pe.edu.upc.dto.GuardianDto;
+import pe.edu.upc.dto.GuardianUpdateDto;
 import pe.edu.upc.model.Guardian;
 import pe.edu.upc.model.UserLogin;
 import pe.edu.upc.repository.IGuardianRepository;
@@ -30,6 +31,18 @@ public class GuardianServiceImpl implements IGuardianService {
 		if (guardianSave == null)
 			return Constants.ERROR_BD;
 
+		return Constants.SUCCESSFULLY;
+	}
+	
+	@Override
+	public int update(GuardianUpdateDto guardianUpdateDto) {
+		Guardian guardian = guardianRepository.findById(guardianUpdateDto.getIdGuardian()).get();
+		if(!guardian.getUserLogin().getPassword().equals(guardianUpdateDto.getPassword()))
+			return Constants.ERROR_PASSWORD;
+		guardian = convert(guardian, guardianUpdateDto);
+		Guardian guardianSave = guardianRepository.save(guardian);
+		if (guardianSave == null)
+			return Constants.ERROR_BD;
 		return Constants.SUCCESSFULLY;
 	}
 
@@ -69,6 +82,15 @@ public class GuardianServiceImpl implements IGuardianService {
 		guardianDto.setUsername(guardian.getUserLogin().getUsername());
 		guardianDto.setActive(guardian.getUserLogin().isActive());
 		return guardianDto;
+	}
+	
+	private Guardian convert(Guardian guardian, GuardianUpdateDto guardianUpdateDto) {
+		guardian.getUserLogin().setPassword(guardianUpdateDto.getNewPassword());
+		guardian.setNames(guardianUpdateDto.getNames());
+		guardian.setLastNames(guardianUpdateDto.getLastNames());
+		guardian.setEmail(guardianUpdateDto.getEmail());
+		guardian.setBirthday(guardianUpdateDto.getBirthday());
+		return guardian;
 	}
 
 }

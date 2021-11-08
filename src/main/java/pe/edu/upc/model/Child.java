@@ -48,7 +48,7 @@ public class Child {
 	@Column(nullable = false)
 	private String avatar;
 
-	@ManyToMany(mappedBy="children")
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Symptom> symptoms;
 
 	@ManyToOne
