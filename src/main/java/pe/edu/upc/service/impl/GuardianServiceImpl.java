@@ -31,7 +31,7 @@ public class GuardianServiceImpl implements IGuardianService {
 		if (guardianSave == null)
 			return Constants.ERROR_BD;
 
-		return Constants.SUCCESSFULLY;
+		return guardianSave.getIdGuardian();
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class GuardianServiceImpl implements IGuardianService {
 		Guardian guardianSave = guardianRepository.save(guardian);
 		if (guardianSave == null)
 			return Constants.ERROR_BD;
-		return Constants.SUCCESSFULLY;
+		return guardianSave.getIdGuardian();
 	}
 
 	@Override

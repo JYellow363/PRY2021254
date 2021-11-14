@@ -20,10 +20,10 @@ import pe.edu.upc.model.Topic;
 import pe.edu.upc.model.UserLogin;
 import pe.edu.upc.repository.IChildRepository;
 import pe.edu.upc.repository.IGuardianRepository;
-import pe.edu.upc.repository.ISpecialistRepository;
 import pe.edu.upc.repository.ISymptomRepository;
 import pe.edu.upc.service.IChildService;
 import pe.edu.upc.util.Constants;
+import pe.edu.upc.util.RandomStringGenerator;
 
 @Service
 public class ChildServiceImpl implements IChildService {
@@ -36,9 +36,6 @@ public class ChildServiceImpl implements IChildService {
 
 	@Autowired
 	private IGuardianRepository guardianRepository;
-
-	@Autowired
-	private ISpecialistRepository specialistRepository;
 
 	@Override
 	public List<ChildDto> findByGuardianIdGuardian(int idGuardian) {
@@ -59,12 +56,7 @@ public class ChildServiceImpl implements IChildService {
 		Child childSave = childRepository.save(child);
 		if (childSave == null)
 			return Constants.ERROR_BD;
-		Specialist specialist = childSave.getSpecialist();
-		specialist.setChild(childSave);
-		Specialist specialistSave = specialistRepository.save(specialist);
-		if (specialistSave == null)
-			return Constants.ERROR_BD;
-		return Constants.SUCCESSFULLY;
+		return childSave.getIdChild();
 	}
 
 	@Transactional
@@ -75,7 +67,7 @@ public class ChildServiceImpl implements IChildService {
 		Child childSave = childRepository.save(child);
 		if (childSave == null)
 			return Constants.ERROR_BD;
-		return Constants.SUCCESSFULLY;
+		return childSave.getIdChild();
 	}
 
 	@Transactional
@@ -97,7 +89,7 @@ public class ChildServiceImpl implements IChildService {
 		child.setAvatar(childCreateDto.getAvatar());
 		child.setBirthday(childCreateDto.getBirthday());
 		child.setGender(childCreateDto.getGender());
-	
+
 		List<Symptom> symptoms = new ArrayList<Symptom>();
 		Symptom symptom = new Symptom();
 		for (int i = 0; i < childCreateDto.getSymptoms().length; i++) {
@@ -109,16 +101,27 @@ public class ChildServiceImpl implements IChildService {
 		child.setGuardian(guardian);
 		child.setFavoriteLevels(new ArrayList<Level>());
 		child.setFavoriteTopics(new ArrayList<Topic>());
+		child.setSpecialist(null);
+		return child;
+	}
+
+	@Override
+	public int activateSpecialist(int idChild) {
 		Specialist specialist = new Specialist();
+		Child child = childRepository.findById(idChild).get();
 		UserLogin userLogin = new UserLogin();
 		userLogin.setActive(false);
-		userLogin.setUsername(guardian.getUserLogin().getUsername() + "_esp");
-		userLogin.setPassword(guardian.getUserLogin().getUsername() + "_esp");
+		userLogin.setUsername(RandomStringGenerator.getString());
+		userLogin.setPassword(RandomStringGenerator.getString());
 		specialist.setUserLogin(userLogin);
 		specialist.setLastNames("");
 		specialist.setNames("");
+		specialist.setChild(child);
 		child.setSpecialist(specialist);
-		return child;
+		Child childSave = childRepository.save(child);
+		if (childSave == null)
+			return Constants.ERROR_BD;
+		return childSave.getSpecialist().getIdSpecialist();
 	}
 
 	private ChildDto convert(Child child) {

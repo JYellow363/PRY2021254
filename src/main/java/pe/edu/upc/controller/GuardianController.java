@@ -42,27 +42,33 @@ public class GuardianController {
 		int result = guardianService.save(guardian);
 		ResponseDto response = new ResponseDto();
 		response.setIdResponse(result);
-		if (result == Constants.SUCCESSFULLY)
-			response.setMessage("Registro exitoso");
-		else if (result == Constants.ERROR_DUPLICATE)
+		if (result == Constants.ERROR_DUPLICATE) {
 			response.setMessage("Nombre de usuario duplicado");
-		else
+			return ResponseEntity.ok(response);
+		} else if (result == Constants.ERROR_BD) {
 			response.setMessage("Error al registrar");
-		return ResponseEntity.ok(response);
+			return ResponseEntity.ok(response);
+		} else {
+			GuardianDto guardianCreate = guardianService.listByIdGuardian(result);
+			return ResponseEntity.ok(guardianCreate);
+		}
 	}
 
 	@PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> login(@RequestBody UserLoginDto userLogin) {
-		int result = userLoginService.login(userLogin);
+		int result = userLoginService.loginGuardian(userLogin);
 		ResponseDto response = new ResponseDto();
 		response.setIdResponse(result);
-		if (result == Constants.ERROR_PASSWORD)
+		if (result == Constants.ERROR_PASSWORD) {
 			response.setMessage("Contraseña incorrecta");
-		else if (result == Constants.ERROR_EXIST)
+			return ResponseEntity.ok(response);
+		} else if (result == Constants.ERROR_EXIST) {
 			response.setMessage("El nombre de usuario no existe");
-		else
-			response.setMessage("Login exitoso");
-		return ResponseEntity.ok(response);
+			return ResponseEntity.ok(response);
+		} else {
+			GuardianDto guardian = guardianService.listByIdGuardian(result);
+			return ResponseEntity.ok(guardian);
+		}
 	}
 
 	@PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
@@ -70,12 +76,32 @@ public class GuardianController {
 		int result = guardianService.update(guardian);
 		ResponseDto response = new ResponseDto();
 		response.setIdResponse(result);
-		if (result == Constants.SUCCESSFULLY)
-			response.setMessage("Actualización exitosa");
-		else if (result == Constants.ERROR_PASSWORD)
-			response.setMessage("Contraseña incorrecta");
-		else
+		if (result == Constants.ERROR_BD) {
 			response.setMessage("Error al actualizar");
+			return ResponseEntity.ok(response);
+		} else if (result == Constants.ERROR_PASSWORD) {
+			response.setMessage("Contraseña incorrecta");
+			return ResponseEntity.ok(response);
+		} else {
+			GuardianDto guardianUpdate = guardianService.listByIdGuardian(result);
+			return ResponseEntity.ok(guardianUpdate);
+		}
+	}
+
+	@GetMapping(path = "/restorePassword", produces = "application/json")
+	public ResponseEntity<?> restorePassword(@RequestParam String email) {
+		int result = userLoginService.restorePassword(email);
+		ResponseDto response = new ResponseDto();
+		response.setIdResponse(result);
+		if (result == Constants.ERROR_EXIST) {
+			response.setMessage("Email no registrado");
+		} else if (result == Constants.ERROR_BD) {
+			response.setMessage("Error al restaurar contraseña");
+		} else if (result == Constants.ERROR_EMAIL) {
+			response.setMessage("Error al enviar correo");
+		} else {
+			response.setMessage("Correo enviado");
+		}
 		return ResponseEntity.ok(response);
 	}
 

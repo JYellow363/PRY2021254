@@ -8,4 +8,5 @@ import pe.edu.upc.model.UserLogin;
 @Repository
 public interface IUserLoginRepository extends JpaRepository<UserLogin, Integer> {
 	UserLogin findByUsername(String username);
+	UserLogin findByGuardianEmail(String email);
 }

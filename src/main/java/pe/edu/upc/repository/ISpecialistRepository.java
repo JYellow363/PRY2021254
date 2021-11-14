@@ -7,5 +7,4 @@ import pe.edu.upc.model.Specialist;
 
 @Repository
 public interface ISpecialistRepository extends JpaRepository<Specialist, Integer> {
-
 }

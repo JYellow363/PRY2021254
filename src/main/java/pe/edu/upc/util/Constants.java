@@ -7,4 +7,5 @@ public final class Constants {
 	public static final int ERROR_DUPLICATE = -1;
 	public static final int ERROR_EXIST = -2;
 	public static final int ERROR_PASSWORD = -3;
+	public static final int ERROR_EMAIL = -4;
 }

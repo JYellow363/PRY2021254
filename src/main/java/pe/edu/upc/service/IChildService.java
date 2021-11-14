@@ -12,4 +12,5 @@ public interface IChildService {
 	public int save(ChildCreateDto childCreateDto);
 	public int update(ChildUpdateDto childupdateDto);
 	public int delete(int idChild);
+	int activateSpecialist(int idChild);
 }
