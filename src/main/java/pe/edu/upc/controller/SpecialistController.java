@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.edu.upc.dto.GuardianDto;
 import pe.edu.upc.dto.ResponseDto;
 import pe.edu.upc.dto.SpecialistDto;
 import pe.edu.upc.dto.UserLoginDto;
