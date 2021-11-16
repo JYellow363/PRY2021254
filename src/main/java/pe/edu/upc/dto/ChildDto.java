@@ -1,11 +1,13 @@
 package pe.edu.upc.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pe.edu.upc.model.Symptom;
 
 @Getter
 @Setter
@@ -20,4 +22,5 @@ public class ChildDto {
 	private String asdLevel;
 	private String avatar;
 	private int idGuardian;
+	private List<Symptom> symptoms;
 }

@@ -134,6 +134,10 @@ public class ChildServiceImpl implements IChildService {
 		childDto.setBirthday(child.getBirthday());
 		childDto.setGender(child.getGender());
 		childDto.setIdGuardian(child.getGuardian().getIdGuardian());
+		childDto.setSymptoms(new ArrayList<Symptom>());
+		for (int i = 0; i < child.getSymptoms().size(); i++) {
+			childDto.getSymptoms().add(child.getSymptoms().get(i));
+		}
 		return childDto;
 	}
 
