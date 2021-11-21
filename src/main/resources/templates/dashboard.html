@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8"></meta>
+<title>Dashboard</title>
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css"></link>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
+	<div th:replace="fragments/header :: header"></div>
 
+	<div class="container">
+		<div class="row clearfix">
+			<h1 th:text="${title}"></h1>
+			<th:block th:each="levelRecord : ${levelRecords}">
+				<h2 th:text="${levelRecord.description}"></h2>
+				<div align="center" class="row">
+					<div class="col-sm-4">
+						<div th:id="'piechart-' + ${levelRecord.id}"></div>
+					</div>
+					<div class="col-sm-8">
+						<div th:id="'curve_chart-' + ${levelRecord.id}"></div>
+					</div>
+				</div>
+			</th:block>
+		</div>
+	</div>
+
+	<div th:replace="fragments/footer :: footer"></div>
+	<script th:inline="javascript">
+		 $(document).ready(function() {
+	         google.charts.load('current', {
+	             packages : [ 'corechart']
+	         });
+	         google.charts.setOnLoadCallback(drawPieChart);
+	         google.charts.setOnLoadCallback(drawLineChart);
+	     });
+
+		 function drawLineChart() {
+			 var options = {
+			          title: 'Resultados por fecha',
+			          legend: { position: 'bottom' }
+			        };
+			 var levelRecords = /*[[${levelRecords}]]*/'noValue';
+			 
+			 for(var i=0; i<levelRecords.length; i++){
+				 var data = new google.visualization.DataTable();
+			      data.addColumn('string', 'Fecha');
+			      data.addColumn('number', 'Resultado');
+
+				 for(var j=0; j<levelRecords[i].levelRecords.length; j++) {
+					 console.log(levelRecords[i].levelRecords[j].successful);
+						data.addRow([levelRecords[i].levelRecords[j].date.substring(0, 10) + ' ' +
+							levelRecords[i].levelRecords[j].date.substring(11, 16),
+							levelRecords[i].levelRecords[j].successful ? 1 : 0]);
+						}
+
+				var chart = new google.visualization.LineChart(
+						 document.getElementById('curve_chart-'+levelRecords[i].id));
+				 chart.draw(data, options);
+				 }
+			 }
+
+		 function drawPieChart() {
+			var options = {
+					title : 'Resultados por Estado de Nivel'
+						};
+            var levelRecords = /*[[${levelRecords}]]*/'noValue';
+            console.log(levelRecords);
+            for(var i=0; i<levelRecords.length; i++){
+            	 var data = new google.visualization.DataTable();
+                 data.addColumn('string', 'Estado');
+                 data.addColumn('number', 'Niveles');
+                 data.addRow([ 'Completo', levelRecords[i].positiveResults ]);
+                 data.addRow([ 'Incompleto', levelRecords[i].negativeResults ]);
+                 var chart = new google.visualization.PieChart(document
+                    .getElementById('piechart-'+levelRecords[i].id));
+                 chart.draw(data, options);
+            }
+        }
+    </script>
 </body>
 </html>
