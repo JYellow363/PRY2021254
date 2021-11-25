@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.upc.dto.SpecialistDto;
 import pe.edu.upc.model.Specialist;
-import pe.edu.upc.repository.IChildRepository;
 import pe.edu.upc.repository.ISpecialistRepository;
 import pe.edu.upc.service.ISpecialistService;
 
@@ -14,8 +13,6 @@ public class SpecialistServiceImpl implements ISpecialistService {
 	
 	@Autowired
 	private ISpecialistRepository specialistRepository;
-	@Autowired
-	private IChildRepository childRepository;
 
 	@Override
 	public SpecialistDto listByIdSpecialist(int idSpecialist) {
@@ -25,7 +22,7 @@ public class SpecialistServiceImpl implements ISpecialistService {
 	
 	@Override
 	public SpecialistDto listByIdChild(int idChild) {
-		SpecialistDto specialistDto = convert(childRepository.findById(idChild).get().getSpecialist());
+		SpecialistDto specialistDto = convert(specialistRepository.findByChildIdChild(idChild));
 		return specialistDto;
 	}
 	
