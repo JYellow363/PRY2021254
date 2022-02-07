@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Guardian {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idGuardian;
 	
 	@Column(length = 80, nullable = false)

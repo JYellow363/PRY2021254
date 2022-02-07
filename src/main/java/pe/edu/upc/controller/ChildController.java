@@ -93,7 +93,10 @@ public class ChildController {
 		if (result == Constants.ERROR_BD) {
 			response.setMessage("Error al activar especialista");
 			return ResponseEntity.ok(response);
-		} else {
+		} else if(result == Constants.ERROR_EMAIL) {
+			response.setMessage("Error en el envío de credenciales");
+			return ResponseEntity.ok(response);
+		}else {
 			SpecialistDto specialist = specialistService.listByIdSpecialist(result);
 			return ResponseEntity.ok(specialist);
 		}

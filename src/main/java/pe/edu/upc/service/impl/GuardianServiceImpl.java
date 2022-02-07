@@ -1,6 +1,7 @@
 package pe.edu.upc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pe.edu.upc.dto.GuardianCreateDto;
@@ -19,6 +20,8 @@ public class GuardianServiceImpl implements IGuardianService {
 	private IGuardianRepository guardianRepository;
 	@Autowired
 	private IUserLoginRepository userLoginRepository;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public int save(GuardianCreateDto guardianCreateDto) {
@@ -33,11 +36,11 @@ public class GuardianServiceImpl implements IGuardianService {
 
 		return guardianSave.getIdGuardian();
 	}
-	
+
 	@Override
 	public int update(GuardianUpdateDto guardianUpdateDto) {
 		Guardian guardian = guardianRepository.findById(guardianUpdateDto.getIdGuardian()).get();
-		if(!guardian.getUserLogin().getPassword().equals(guardianUpdateDto.getPassword()))
+		if (!guardian.getUserLogin().getPassword().equals(guardianUpdateDto.getPassword()))
 			return Constants.ERROR_PASSWORD;
 		guardian = convert(guardian, guardianUpdateDto);
 		Guardian guardianSave = guardianRepository.save(guardian);
@@ -58,7 +61,7 @@ public class GuardianServiceImpl implements IGuardianService {
 		userLogin.setIdUserLogin(0);
 		userLogin.setUsername(guardianCreateDto.getUsername());
 		userLogin.setActive(true);
-		userLogin.setPassword(guardianCreateDto.getPassword());
+		userLogin.setPassword(passwordEncoder.encode(guardianCreateDto.getPassword()));
 
 		Guardian guardian = new Guardian();
 		guardian.setIdGuardian(0);
@@ -70,7 +73,7 @@ public class GuardianServiceImpl implements IGuardianService {
 
 		return guardian;
 	}
-	
+
 	private GuardianDto convert(Guardian guardian) {
 		GuardianDto guardianDto = new GuardianDto();
 		guardianDto.setBirthday(guardian.getBirthday());
@@ -83,9 +86,9 @@ public class GuardianServiceImpl implements IGuardianService {
 		guardianDto.setActive(guardian.getUserLogin().isActive());
 		return guardianDto;
 	}
-	
+
 	private Guardian convert(Guardian guardian, GuardianUpdateDto guardianUpdateDto) {
-		guardian.getUserLogin().setPassword(guardianUpdateDto.getNewPassword());
+		guardian.getUserLogin().setPassword(passwordEncoder.encode(guardianUpdateDto.getNewPassword()));
 		guardian.setNames(guardianUpdateDto.getNames());
 		guardian.setLastNames(guardianUpdateDto.getLastNames());
 		guardian.setEmail(guardianUpdateDto.getEmail());

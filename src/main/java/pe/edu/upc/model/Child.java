@@ -27,7 +27,7 @@ import lombok.Setter;
 public class Child {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idChild;
 
 	@Column(length = 80, nullable = false)

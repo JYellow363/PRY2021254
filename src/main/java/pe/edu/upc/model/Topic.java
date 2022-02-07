@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Topic {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idTopic;
 	
 	@Column(length = 60, nullable = false)

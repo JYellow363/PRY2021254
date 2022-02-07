@@ -3,9 +3,13 @@ package pe.edu.upc.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pe.edu.upc.dto.ChildCreateDto;
@@ -30,12 +34,14 @@ public class ChildServiceImpl implements IChildService {
 
 	@Autowired
 	private IChildRepository childRepository;
-
 	@Autowired
 	private ISymptomRepository symptomRepository;
-
 	@Autowired
 	private IGuardianRepository guardianRepository;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private JavaMailSender sender;
 
 	@Override
 	public List<ChildDto> findByGuardianIdGuardian(int idGuardian) {
@@ -111,16 +117,23 @@ public class ChildServiceImpl implements IChildService {
 		Child child = childRepository.findById(idChild).get();
 		UserLogin userLogin = new UserLogin();
 		userLogin.setActive(false);
-		userLogin.setUsername(RandomStringGenerator.getString());
-		userLogin.setPassword(RandomStringGenerator.getString());
+		String username = RandomStringGenerator.getString();
+		userLogin.setUsername(username);
+		String password = RandomStringGenerator.getString();
+		userLogin.setPassword(passwordEncoder.encode(password));
 		specialist.setUserLogin(userLogin);
 		specialist.setLastNames("");
 		specialist.setNames("");
 		specialist.setChild(child);
 		child.setSpecialist(specialist);
 		Child childSave = childRepository.save(child);
-		if (childSave == null)
+		if (childSave == null) {
 			return Constants.ERROR_BD;
+		} else {
+			boolean send = sendEmailTool(child.getGuardian().getEmail(), username, password);
+			if (send == false)
+				return Constants.ERROR_EMAIL;
+		}
 		return childSave.getSpecialist().getIdSpecialist();
 	}
 
@@ -165,5 +178,21 @@ public class ChildServiceImpl implements IChildService {
 		child.setSymptoms(symptoms);
 		System.out.println(child.getSymptoms().size());
 		return child;
+	}
+
+	private boolean sendEmailTool(String email, String username, String password) {
+		boolean send = false;
+		MimeMessage message = sender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+		try {
+			helper.setTo(email);
+			helper.setSubject("TEApprendo: Credenciales de especialista");
+			helper.setText("Usuario Especialista: " + username + ". Contraseña especialista: " + password + ".", false);
+			sender.send(message);
+			send = true;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return send;
 	}
 }

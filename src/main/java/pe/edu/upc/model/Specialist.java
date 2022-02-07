@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Specialist {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idSpecialist;
 	
 	@OneToOne(cascade = CascadeType.ALL)

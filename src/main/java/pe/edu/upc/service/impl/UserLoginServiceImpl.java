@@ -5,6 +5,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pe.edu.upc.dto.UserLoginDto;
@@ -18,16 +19,17 @@ import pe.edu.upc.util.RandomStringGenerator;
 public class UserLoginServiceImpl implements IUserLoginService {
 	@Autowired
 	private IUserLoginRepository userLoginRepository;
-
 	@Autowired
 	private JavaMailSender sender;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public int loginGuardian(UserLoginDto userLoginDto) {
 		UserLogin userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
 		if (userLogin == null)
 			return Constants.ERROR_EXIST;
-		if (!userLogin.getPassword().equals(userLoginDto.getPassword()))
+		if (!passwordEncoder.matches(userLoginDto.getPassword(), userLogin.getPassword()))
 			return Constants.ERROR_PASSWORD;
 		return userLogin.getGuardian().getIdGuardian();
 	}
@@ -37,7 +39,7 @@ public class UserLoginServiceImpl implements IUserLoginService {
 		UserLogin userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
 		if (userLogin == null)
 			return Constants.ERROR_EXIST;
-		if (!userLogin.getPassword().equals(userLoginDto.getPassword()))
+		if (!passwordEncoder.matches(userLogin.getPassword(), userLoginDto.getPassword()))
 			return Constants.ERROR_PASSWORD;
 		return userLogin.getSpecialist().getIdSpecialist();
 	}
@@ -49,7 +51,7 @@ public class UserLoginServiceImpl implements IUserLoginService {
 			return Constants.ERROR_EXIST;
 		else {
 			String newPassword = RandomStringGenerator.getString();
-			userLogin.setPassword(newPassword);
+			userLogin.setPassword(passwordEncoder.encode(newPassword));
 			UserLogin userLoginSave = userLoginRepository.save(userLogin);
 			if (userLoginSave == null)
 				return Constants.ERROR_BD;

@@ -32,7 +32,6 @@ public class SpecialistServiceImpl implements ISpecialistService {
 		specialistDto.setNames(specialist.getNames());
 		specialistDto.setLastNames(specialist.getLastNames());
 		specialistDto.setUsername(specialist.getUserLogin().getUsername());
-		specialistDto.setPassword(specialist.getUserLogin().getPassword());
 		return specialistDto;
 	}
 

@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Level {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idLevel;
 	
 	@Column(length = 60, nullable = false)

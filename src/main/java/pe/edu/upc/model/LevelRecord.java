@@ -22,7 +22,7 @@ import lombok.Setter;
 public class LevelRecord {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idLevelRecord;
 	
 	@ManyToOne

@@ -14,5 +14,4 @@ public class SpecialistDto {
 	private String names;
 	private String lastNames;
 	private String username;
-	private String password;
 }
