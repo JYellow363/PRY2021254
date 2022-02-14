@@ -19,6 +19,7 @@ import pe.edu.upc.dto.UserLoginDto;
 import pe.edu.upc.service.IGuardianService;
 import pe.edu.upc.service.IUserLoginService;
 import pe.edu.upc.util.Constants;
+import pe.edu.upc.util.JWTGenerator;
 
 @CrossOrigin
 @RestController
@@ -66,8 +67,10 @@ public class GuardianController {
 			response.setMessage("El nombre de usuario no existe");
 			return ResponseEntity.ok(response);
 		} else {
-			GuardianDto guardian = guardianService.listByIdGuardian(result);
-			return ResponseEntity.ok(guardian);
+			String token = JWTGenerator.getJWTToken(userLogin.getUsername(), userLogin.getPassword());
+			response.setToken(token);
+			response.setGuardian(guardianService.listByIdGuardian(result));
+			return ResponseEntity.ok(response);
 		}
 	}
 

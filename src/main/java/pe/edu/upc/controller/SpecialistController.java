@@ -16,6 +16,7 @@ import pe.edu.upc.dto.UserLoginDto;
 import pe.edu.upc.service.ISpecialistService;
 import pe.edu.upc.service.IUserLoginService;
 import pe.edu.upc.util.Constants;
+import pe.edu.upc.util.JWTGenerator;
 
 @CrossOrigin
 @RestController
@@ -52,8 +53,10 @@ public class SpecialistController {
 			response.setMessage("El nombre de usuario no existe");
 			return ResponseEntity.ok(response);
 		} else {
-			SpecialistDto specialist = specialistService.listByIdSpecialist(result);
-			return ResponseEntity.ok(specialist);
+			String token = JWTGenerator.getJWTToken(userLogin.getUsername(), userLogin.getPassword());
+			response.setToken(token);
+			response.setSpecialist(specialistService.listByIdSpecialist(result));
+			return ResponseEntity.ok(response);
 		}
 	}
 }
