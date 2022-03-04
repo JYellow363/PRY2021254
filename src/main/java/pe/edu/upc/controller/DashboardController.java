@@ -1,11 +1,15 @@
 package pe.edu.upc.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import pe.edu.upc.dto.LevelRecordDto;
 import pe.edu.upc.service.ILevelRecordService;
 
 @Controller
@@ -16,24 +20,24 @@ public class DashboardController {
 	
 	int idChildren = 84;
 	
-	@RequestMapping("/categories")
-	public String goDashBoardCategory(Model model) {
-		model.addAttribute("title", "Monitoreo por Categoría");
-		model.addAttribute("levelRecords",levelRecordService.listByChildrenForCategory(idChildren));
-		return "dashboard";
+	// Monitoring by category
+	@GetMapping(path = "/categories", produces = "application/json")
+	public ResponseEntity<?> getDashboardCategory() {
+		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForCategory(idChildren);
+		return ResponseEntity.ok(levelRecords);
 	}
 	
-	@RequestMapping("/categories/{idCategory}")
-	public String goDashBoardTopic(Model model, @PathVariable int idCategory) {
-		model.addAttribute("title", "Monitoreo por Tema");
-		model.addAttribute("levelRecords",levelRecordService.listByChildrenForTopic(idChildren, idCategory));
-		return "dashboard";
+	// Monitoring by topic
+	@GetMapping(path = "/categories", produces = "application/json")
+	public ResponseEntity<?> getDashboardTopic(@RequestParam int idCategory) {
+		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForTopic(idChildren, idCategory);
+		return ResponseEntity.ok(levelRecords);
 	}
 	
-	@RequestMapping("/topics/{idTopic}")
-	public String goDashBoardLevel(Model model, @PathVariable int idTopic) {
-		model.addAttribute("title", "Monitoreo por Nivel");
-		model.addAttribute("levelRecords",levelRecordService.listByChildrenForLevel(idChildren, idTopic));
-		return "dashboard";
+	// Monitoring by level
+	@GetMapping(path = "/categories", produces = "application/json")
+	public ResponseEntity<?> getDashboardLevel(@RequestParam int idTopic) {
+		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForLevel(idChildren, idTopic);
+		return ResponseEntity.ok(levelRecords);
 	}
 }
