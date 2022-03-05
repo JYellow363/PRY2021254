@@ -18,25 +18,23 @@ public class DashboardController {
 	@Autowired
 	private ILevelRecordService levelRecordService;
 	
-	int idChildren = 84;
-	
 	// Monitoring by category
-	@GetMapping(path = "/categories", produces = "application/json")
-	public ResponseEntity<?> getDashboardCategory() {
+	@GetMapping(path = "/getDashboarCategory", produces = "application/json")
+	public ResponseEntity<?> getDashboarCategory(@RequestParam int idChildren) {
 		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForCategory(idChildren);
 		return ResponseEntity.ok(levelRecords);
 	}
 	
 	// Monitoring by topic
-	@GetMapping(path = "/categories", produces = "application/json")
-	public ResponseEntity<?> getDashboardTopic(@RequestParam int idCategory) {
+	@GetMapping(path = "/getDashboardTopic", produces = "application/json")
+	public ResponseEntity<?> getDashboardTopic(@RequestParam int idChildren, @RequestParam int idCategory) {
 		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForTopic(idChildren, idCategory);
 		return ResponseEntity.ok(levelRecords);
 	}
 	
 	// Monitoring by level
-	@GetMapping(path = "/categories", produces = "application/json")
-	public ResponseEntity<?> getDashboardLevel(@RequestParam int idTopic) {
+	@GetMapping(path = "/getDashboardLevel", produces = "application/json")
+	public ResponseEntity<?> getDashboardLevel(@RequestParam int idChildren, @RequestParam int idTopic) {
 		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForLevel(idChildren, idTopic);
 		return ResponseEntity.ok(levelRecords);
 	}
