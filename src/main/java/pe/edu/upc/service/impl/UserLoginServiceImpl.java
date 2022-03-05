@@ -39,7 +39,7 @@ public class UserLoginServiceImpl implements IUserLoginService {
 		UserLogin userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
 		if (userLogin == null)
 			return Constants.ERROR_EXIST;
-		if (!passwordEncoder.matches(userLogin.getPassword(), userLoginDto.getPassword()))
+		if (!passwordEncoder.matches(userLoginDto.getPassword(), userLogin.getPassword()))
 			return Constants.ERROR_PASSWORD;
 		return userLogin.getSpecialist().getIdSpecialist();
 	}
