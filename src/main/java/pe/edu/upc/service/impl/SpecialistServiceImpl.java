@@ -16,7 +16,9 @@ public class SpecialistServiceImpl implements ISpecialistService {
 
 	@Override
 	public SpecialistDto listByIdSpecialist(int idSpecialist) {
-		SpecialistDto specialistDto = convert(specialistRepository.findById(idSpecialist).get());
+		Specialist specialist = specialistRepository.findById(idSpecialist).get();
+		SpecialistDto specialistDto = convert(specialist);
+		specialistDto.setIdChild(specialist.getChild().getIdChild());
 		return specialistDto;
 	}
 	
