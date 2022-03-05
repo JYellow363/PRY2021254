@@ -119,6 +119,7 @@ public class ChildServiceImpl implements IChildService {
 		userLogin.setActive(false);
 		String username = RandomStringGenerator.getString();
 		userLogin.setUsername(username);
+		userLogin.setActive(true);
 		String password = RandomStringGenerator.getString();
 		userLogin.setPassword(passwordEncoder.encode(password));
 		specialist.setUserLogin(userLogin);
