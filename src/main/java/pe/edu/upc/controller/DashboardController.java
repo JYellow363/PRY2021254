@@ -19,8 +19,8 @@ public class DashboardController {
 	private ILevelRecordService levelRecordService;
 	
 	// Monitoring by category
-	@GetMapping(path = "/getDashboarCategory", produces = "application/json")
-	public ResponseEntity<?> getDashboarCategory(@RequestParam int idChildren) {
+	@GetMapping(path = "/getDashboardCategory", produces = "application/json")
+	public ResponseEntity<?> getDashboardCategory(@RequestParam int idChildren) {
 		List<LevelRecordDto> levelRecords = levelRecordService.listByChildrenForCategory(idChildren);
 		return ResponseEntity.ok(levelRecords);
 	}
