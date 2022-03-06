@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class LevelRecord {
 	private int idLevelRecord;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Level level;
 	
 	@Column(nullable = false)
@@ -34,5 +37,6 @@ public class LevelRecord {
 	private boolean isSuccessful;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Child child;
 }
