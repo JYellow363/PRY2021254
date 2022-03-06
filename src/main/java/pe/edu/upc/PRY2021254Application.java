@@ -30,8 +30,6 @@ public class PRY2021254Application {
 	@EnableWebSecurity
 	@Configuration
 	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-		
 		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
