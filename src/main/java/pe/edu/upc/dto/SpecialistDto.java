@@ -14,5 +14,5 @@ public class SpecialistDto {
 	private String names;
 	private String lastNames;
 	private String username;
-	private int idChild;
+	private ChildDto child;
 }
