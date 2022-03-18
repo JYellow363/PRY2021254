@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.edu.upc.dto.GuardianCreateDto;
 import pe.edu.upc.dto.GuardianDto;
 import pe.edu.upc.dto.GuardianUpdateDto;
+import pe.edu.upc.dto.LoginResponseDto;
 import pe.edu.upc.dto.ResponseDto;
 import pe.edu.upc.dto.UserLoginDto;
 import pe.edu.upc.service.IGuardianService;
@@ -68,9 +69,8 @@ public class GuardianController {
 			return ResponseEntity.ok(response);
 		} else {
 			String token = JWTGenerator.getJWTToken(userLogin.getUsername(), userLogin.getPassword());
-			response.setToken(token);
-			response.setGuardian(guardianService.listByIdGuardian(result));
-			return ResponseEntity.ok(response);
+			LoginResponseDto loginResponse = new LoginResponseDto(1, token, guardianService.listByIdGuardian(result));
+			return ResponseEntity.ok(loginResponse);
 		}
 	}
 
