@@ -40,7 +40,7 @@ public class GuardianServiceImpl implements IGuardianService {
 	@Override
 	public int update(GuardianUpdateDto guardianUpdateDto) {
 		Guardian guardian = guardianRepository.findById(guardianUpdateDto.getIdGuardian()).get();
-		if (!guardian.getUserLogin().getPassword().equals(guardianUpdateDto.getPassword()))
+		if (!passwordEncoder.matches(guardianUpdateDto.getPassword(), guardian.getUserLogin().getPassword()))
 			return Constants.ERROR_PASSWORD;
 		guardian = convert(guardian, guardianUpdateDto);
 		Guardian guardianSave = guardianRepository.save(guardian);
