@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.edu.upc.dto.AddCustomLevelListDto;
+import pe.edu.upc.dto.AddLevelCustomDto;
 import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
 import pe.edu.upc.dto.ResponseDto;
 import pe.edu.upc.dto.SpecialistDto;
+import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Level;
 import pe.edu.upc.service.IChildService;
 import pe.edu.upc.service.ISpecialistService;
@@ -75,7 +79,7 @@ public class ChildController {
 		}
 	}
 
-	@GetMapping(path = "/delete", produces = "application/json")
+	@DeleteMapping(path = "/delete", produces = "application/json")
 	public ResponseEntity<?> delete(@RequestParam int idChild) {
 		ResponseDto response = new ResponseDto();
 		int result = childService.delete(idChild);
@@ -120,10 +124,87 @@ public class ChildController {
 		return ResponseEntity.ok(response);
 	}
 
+	@DeleteMapping(path = "/deleteFavoriteLevel", produces = "application/json")
+	public ResponseEntity<?> deleteFavoriteLevel(@RequestBody AddLevelDto addLevelDto) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.deleteFavoriteLevel(addLevelDto);
+		response.setIdResponse(result);
+		if (result == Constants.SUCCESSFULLY)
+			response.setMessage("Eliminación exitosa");
+		else
+			response.setMessage("Error al eliminar");
+		return ResponseEntity.ok(response);
+	}
+
 	@GetMapping(path = "/listFavoriteLevels", produces = "application/json")
 	public ResponseEntity<?> listFavoriteLevels(@RequestParam int idChild) {
 		List<Level> levels = childService.listFavoriteLevels(idChild);
 		return ResponseEntity.ok(levels);
+	}
+
+	@PostMapping(path = "/addCustomLevelList", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> addFavoriteLevel(@RequestBody AddCustomLevelListDto addCustomLevelDto) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.addCustomLevelList(addCustomLevelDto);
+		response.setIdResponse(result);
+		if (result == Constants.ERROR_BD) {
+			response.setMessage("Error al agregar lista personalizada");
+		} else {
+			response.setMessage("Lista agregada correctamente");
+		}
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(path = "/listCustomLevelLists", produces = "application/json")
+	public ResponseEntity<?> listCustomLevelLists(@RequestParam int idChild) {
+		List<CustomLevelList> customLevelLists = childService.listCustomLevelLists(idChild);
+		return ResponseEntity.ok(customLevelLists);
+	}
+
+	@GetMapping(path = "/listCustomLevelListById", produces = "application/json")
+	public ResponseEntity<?> listCustomLevelListById(@RequestParam int idCustomLevelList) {
+
+		CustomLevelList customLevelList = childService.listCustomLevelListById(idCustomLevelList);
+		return ResponseEntity.ok(customLevelList);
+	}
+
+	@DeleteMapping(path = "/deleteCustomLevelList", produces = "application/json")
+	public ResponseEntity<?> deleteCustomLevelList(@RequestParam int idChild, @RequestParam int idCustomLevelList) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.deleteCustomLevelList(idChild, idCustomLevelList);
+		response.setIdResponse(result);
+		if (result == Constants.SUCCESSFULLY)
+			response.setMessage("Eliminación exitosa");
+		else
+			response.setMessage("Error al eliminar");
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping(path = "/addLevelToCustomLevelList", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> addLevelToCustomLevelList(@RequestBody AddLevelCustomDto addLevelCustomDto) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.addLevelToCustomLevelList(addLevelCustomDto);
+		response.setIdResponse(result);
+		if (result == Constants.ERROR_BD) {
+			response.setMessage("Error al agregar nivel");
+		} else if (result == Constants.ERROR_DUPLICATE) {
+			response.setMessage("El nivel ya está agregado");
+		} else {
+			response.setMessage("Nivel agregado correctamente");
+		}
+		return ResponseEntity.ok(response);
+	}
+
+	@DeleteMapping(path = "/deleteLevelinCustomLevelList", produces = "application/json")
+	public ResponseEntity<?> deleteFavodeleteLevelinCustomLevelListriteLevel(@RequestBody AddLevelCustomDto addLevelCustomDto) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.deleteLevelinCustomLevelList(addLevelCustomDto);
+		response.setIdResponse(result);
+		if (result == Constants.SUCCESSFULLY)
+			response.setMessage("Eliminación exitosa");
+		else
+			response.setMessage("Error al eliminar");
+		return ResponseEntity.ok(response);
 	}
 
 }

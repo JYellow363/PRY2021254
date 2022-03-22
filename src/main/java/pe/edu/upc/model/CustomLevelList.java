@@ -22,6 +22,8 @@ public class CustomLevelList {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idCustomLevelList;
+	
+	private String name;
 
 	@OneToMany
 	private List<Level> levels;

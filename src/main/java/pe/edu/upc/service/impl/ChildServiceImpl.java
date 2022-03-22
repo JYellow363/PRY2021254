@@ -12,6 +12,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import pe.edu.upc.dto.AddCustomLevelListDto;
+import pe.edu.upc.dto.AddLevelCustomDto;
+import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
@@ -23,6 +26,7 @@ import pe.edu.upc.model.Specialist;
 import pe.edu.upc.model.Symptom;
 import pe.edu.upc.model.UserLogin;
 import pe.edu.upc.repository.IChildRepository;
+import pe.edu.upc.repository.ICustomLevelListRepository;
 import pe.edu.upc.repository.IGuardianRepository;
 import pe.edu.upc.repository.ILevelRepository;
 import pe.edu.upc.repository.ISymptomRepository;
@@ -33,6 +37,8 @@ import pe.edu.upc.util.RandomStringGenerator;
 @Service
 public class ChildServiceImpl implements IChildService {
 
+	@Autowired
+	private ICustomLevelListRepository customLevelListRepository;
 	@Autowired
 	private IChildRepository childRepository;
 	@Autowired
@@ -90,30 +96,7 @@ public class ChildServiceImpl implements IChildService {
 		return Constants.SUCCESSFULLY;
 	}
 
-	private Child convert(ChildCreateDto childCreateDto) {
-		Child child = new Child();
-		child.setNames(childCreateDto.getNames());
-		child.setLastNames(childCreateDto.getLastNames());
-		child.setAsdLevel(childCreateDto.getAsdLevel());
-		child.setAvatar(childCreateDto.getAvatar());
-		child.setBirthday(childCreateDto.getBirthday());
-		child.setGender(childCreateDto.getGender());
-
-		List<Symptom> symptoms = new ArrayList<Symptom>();
-		Symptom symptom = new Symptom();
-		for (int i = 0; i < childCreateDto.getSymptoms().length; i++) {
-			symptom = symptomRepository.findById(childCreateDto.getSymptoms()[i]).get();
-			symptoms.add(symptom);
-		}
-		child.setSymptoms(symptoms);
-		Guardian guardian = guardianRepository.findById(childCreateDto.getIdGuardian()).get();
-		child.setGuardian(guardian);
-		child.setFavoriteLevels(new ArrayList<Level>());
-		child.setCustomLevelLists(new ArrayList<CustomLevelList>());
-		child.setSpecialist(null);
-		return child;
-	}
-
+	@Transactional
 	@Override
 	public int activateSpecialist(int idChild) {
 		Specialist specialist = new Specialist();
@@ -141,6 +124,7 @@ public class ChildServiceImpl implements IChildService {
 		return childSave.getSpecialist().getIdSpecialist();
 	}
 
+	@Transactional
 	@Override
 	public int addFavoriteLevel(int idChild, int idLevel) {
 		Child child = childRepository.findById(idChild).get();
@@ -157,13 +141,121 @@ public class ChildServiceImpl implements IChildService {
 				return Constants.SUCCESSFULLY;
 			}
 		}
+	}
 
+	@Transactional
+	@Override
+	public int deleteFavoriteLevel(AddLevelDto addLevelDto) {
+		Child child = childRepository.findById(addLevelDto.getIdChild()).get();
+		List<Level> newLevels = new ArrayList<Level>();
+		for (Level level : child.getFavoriteLevels()) {
+			if (level.getIdLevel() != addLevelDto.getIdLevel())
+				newLevels.add(level);
+		}
+		child.setFavoriteLevels(newLevels);
+		Child childSave = childRepository.save(child);
+		if (childSave == null) {
+			return Constants.ERROR_BD;
+		} else {
+			return Constants.SUCCESSFULLY;
+		}
 	}
 
 	@Override
 	public List<Level> listFavoriteLevels(int idChild) {
 		Child child = childRepository.findById(idChild).get();
 		return child.getFavoriteLevels();
+	}
+
+	@Transactional
+	@Override
+	public int addCustomLevelList(AddCustomLevelListDto addCustomLevelListDto) {
+		Child child = childRepository.findById(addCustomLevelListDto.getIdChild()).get();
+		CustomLevelList customLevelList = new CustomLevelList(0, addCustomLevelListDto.getName(),
+				new ArrayList<Level>());
+		CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
+		if (customLevelListSave == null) {
+			return Constants.ERROR_BD;
+		}
+		child.getCustomLevelLists().add(customLevelList);
+		child.setCustomLevelLists(child.getCustomLevelLists());
+		Child childSave = childRepository.save(child);
+		if (childSave == null) {
+			return Constants.ERROR_BD;
+		} else {
+			return Constants.SUCCESSFULLY;
+		}
+	}
+
+	@Override
+	public List<CustomLevelList> listCustomLevelLists(int idChild) {
+		Child child = childRepository.findById(idChild).get();
+		return child.getCustomLevelLists();
+	}
+
+	@Override
+	public CustomLevelList listCustomLevelListById(int idCustomLevelList) {
+		return customLevelListRepository.findById(idCustomLevelList).get();
+	}
+
+	@Transactional
+	@Override
+	public int deleteCustomLevelList(int idChild, int idCustomLevelList) {
+		try {
+			Child child = childRepository.findById(idChild).get();
+			List<CustomLevelList> customLevelLists = new ArrayList<CustomLevelList>();
+			for (CustomLevelList levelList : child.getCustomLevelLists()) {
+				if (levelList.getIdCustomLevelList() != idCustomLevelList)
+					customLevelLists.add(levelList);
+			}
+			child.setCustomLevelLists(customLevelLists);
+			Child childSave = childRepository.save(child);
+			if (childSave == null)
+				return Constants.ERROR_BD;
+			customLevelListRepository.deleteById(idCustomLevelList);
+		} catch (Exception e) {
+			return Constants.ERROR_BD;
+		}
+		return Constants.SUCCESSFULLY;
+	}
+
+	@Transactional
+	@Override
+	public int addLevelToCustomLevelList(AddLevelCustomDto addLevelCustomListDto) {
+		CustomLevelList customLevelList = customLevelListRepository
+				.findById(addLevelCustomListDto.getIdCustomLevelList()).get();
+		Level level = levelRepository.findById(addLevelCustomListDto.getIdLevel()).get();
+		if (customLevelList.getLevels().contains(level)) {
+			return Constants.ERROR_DUPLICATE;
+		} else {
+			customLevelList.getLevels().add(level);
+			customLevelList.setLevels(customLevelList.getLevels());
+			CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
+			if (customLevelListSave == null) {
+				return Constants.ERROR_BD;
+			} else {
+				return Constants.SUCCESSFULLY;
+			}
+		}
+	}
+
+	@Transactional
+	@Override
+	public int deleteLevelinCustomLevelList(AddLevelCustomDto addLevelCustomListDto) {
+		CustomLevelList customLevelList = customLevelListRepository
+				.findById(addLevelCustomListDto.getIdCustomLevelList()).get();
+		List<Level> newLevels = new ArrayList<Level>();
+		for (Level level : customLevelList.getLevels()) {
+			if (level.getIdLevel() != addLevelCustomListDto.getIdLevel())
+				newLevels.add(level);
+		}
+		customLevelList.setLevels(newLevels);
+		CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
+		if (customLevelListSave == null) {
+			return Constants.ERROR_BD;
+		} else {
+			return Constants.SUCCESSFULLY;
+		}
 	}
 
 	private ChildDto convert(Child child) {
@@ -209,6 +301,30 @@ public class ChildServiceImpl implements IChildService {
 		return child;
 	}
 
+	private Child convert(ChildCreateDto childCreateDto) {
+		Child child = new Child();
+		child.setNames(childCreateDto.getNames());
+		child.setLastNames(childCreateDto.getLastNames());
+		child.setAsdLevel(childCreateDto.getAsdLevel());
+		child.setAvatar(childCreateDto.getAvatar());
+		child.setBirthday(childCreateDto.getBirthday());
+		child.setGender(childCreateDto.getGender());
+
+		List<Symptom> symptoms = new ArrayList<Symptom>();
+		Symptom symptom = new Symptom();
+		for (int i = 0; i < childCreateDto.getSymptoms().length; i++) {
+			symptom = symptomRepository.findById(childCreateDto.getSymptoms()[i]).get();
+			symptoms.add(symptom);
+		}
+		child.setSymptoms(symptoms);
+		Guardian guardian = guardianRepository.findById(childCreateDto.getIdGuardian()).get();
+		child.setGuardian(guardian);
+		child.setFavoriteLevels(new ArrayList<Level>());
+		child.setCustomLevelLists(new ArrayList<CustomLevelList>());
+		child.setSpecialist(null);
+		return child;
+	}
+
 	private boolean sendEmailTool(String email, String username, String password) {
 		boolean send = false;
 		MimeMessage message = sender.createMimeMessage();
@@ -224,4 +340,5 @@ public class ChildServiceImpl implements IChildService {
 		}
 		return send;
 	}
+
 }
