@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.upc.dto.LevelHistoricalRecordDto;
 import pe.edu.upc.dto.LevelRecordCreateDto;
 import pe.edu.upc.dto.LevelRecordDto;
 import pe.edu.upc.model.Category;
@@ -119,7 +120,17 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 		return new LevelRecordDto(idCategory, category.getDescription(), positiveResults, negativeResults,
 				levelRecords);
 	}
-
+	
+	@Override
+	public List<LevelHistoricalRecordDto> listByIdChild(int idChild) {
+		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChild(idChild);
+		List<LevelHistoricalRecordDto> levelHistoricalRecordsDto = new ArrayList<LevelHistoricalRecordDto>();
+		for (LevelRecord levelRecord: levelRecords) {
+			levelHistoricalRecordsDto.add(convert(levelRecord));
+		}
+		return levelHistoricalRecordsDto;
+	}
+	
 	private LevelRecord convert(LevelRecordCreateDto levelRecordCreateDto) {
 		LevelRecord levelRecord = new LevelRecord();
 		Level level = new Level();
@@ -132,5 +143,13 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 		levelRecord.setSuccessful(levelRecordCreateDto.isSuccessful());
 		return levelRecord;
 	}
-
+	
+	private LevelHistoricalRecordDto convert(LevelRecord levelRecord) {
+		LevelHistoricalRecordDto levelHistoricalRecordDto = new LevelHistoricalRecordDto();
+		levelHistoricalRecordDto.setIdLevelRecord(levelRecord.getIdLevelRecord());
+		levelHistoricalRecordDto.setDate(levelRecord.getDate());
+		levelHistoricalRecordDto.setSuccessful(levelRecord.isSuccessful());
+		levelHistoricalRecordDto.setLevel(levelRecord.getLevel());
+		return levelHistoricalRecordDto;
+	};
 }

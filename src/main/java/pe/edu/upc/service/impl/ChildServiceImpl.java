@@ -16,14 +16,15 @@ import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
 import pe.edu.upc.model.Child;
+import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Guardian;
 import pe.edu.upc.model.Level;
 import pe.edu.upc.model.Specialist;
 import pe.edu.upc.model.Symptom;
-import pe.edu.upc.model.Topic;
 import pe.edu.upc.model.UserLogin;
 import pe.edu.upc.repository.IChildRepository;
 import pe.edu.upc.repository.IGuardianRepository;
+import pe.edu.upc.repository.ILevelRepository;
 import pe.edu.upc.repository.ISymptomRepository;
 import pe.edu.upc.service.IChildService;
 import pe.edu.upc.util.Constants;
@@ -38,6 +39,8 @@ public class ChildServiceImpl implements IChildService {
 	private ISymptomRepository symptomRepository;
 	@Autowired
 	private IGuardianRepository guardianRepository;
+	@Autowired
+	private ILevelRepository levelRepository;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
@@ -106,7 +109,7 @@ public class ChildServiceImpl implements IChildService {
 		Guardian guardian = guardianRepository.findById(childCreateDto.getIdGuardian()).get();
 		child.setGuardian(guardian);
 		child.setFavoriteLevels(new ArrayList<Level>());
-		child.setFavoriteTopics(new ArrayList<Topic>());
+		child.setCustomLevelLists(new ArrayList<CustomLevelList>());
 		child.setSpecialist(null);
 		return child;
 	}
@@ -136,6 +139,31 @@ public class ChildServiceImpl implements IChildService {
 				return Constants.ERROR_EMAIL;
 		}
 		return childSave.getSpecialist().getIdSpecialist();
+	}
+
+	@Override
+	public int addFavoriteLevel(int idChild, int idLevel) {
+		Child child = childRepository.findById(idChild).get();
+		Level level = levelRepository.findById(idLevel).get();
+		if (child.getFavoriteLevels().contains(level)) {
+			return Constants.ERROR_DUPLICATE;
+		} else {
+			child.getFavoriteLevels().add(level);
+			child.setFavoriteLevels(child.getFavoriteLevels());
+			Child childSave = childRepository.save(child);
+			if (childSave == null) {
+				return Constants.ERROR_BD;
+			} else {
+				return Constants.SUCCESSFULLY;
+			}
+		}
+
+	}
+
+	@Override
+	public List<Level> listFavoriteLevels(int idChild) {
+		Child child = childRepository.findById(idChild).get();
+		return child.getFavoriteLevels();
 	}
 
 	private ChildDto convert(Child child) {

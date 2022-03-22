@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
 import pe.edu.upc.dto.ResponseDto;
 import pe.edu.upc.dto.SpecialistDto;
+import pe.edu.upc.model.Level;
 import pe.edu.upc.service.IChildService;
 import pe.edu.upc.service.ISpecialistService;
 import pe.edu.upc.util.Constants;
@@ -29,7 +31,7 @@ public class ChildController {
 
 	@Autowired
 	private IChildService childService;
-	
+
 	@Autowired
 	private ISpecialistService specialistService;
 
@@ -93,14 +95,35 @@ public class ChildController {
 		if (result == Constants.ERROR_BD) {
 			response.setMessage("Error al activar especialista");
 			return ResponseEntity.ok(response);
-		} else if(result == Constants.ERROR_EMAIL) {
+		} else if (result == Constants.ERROR_EMAIL) {
 			response.setMessage("Error en el envío de credenciales");
 			return ResponseEntity.ok(response);
-		}else {
+		} else {
 			SpecialistDto specialist = specialistService.listByIdSpecialist(result);
 			return ResponseEntity.ok(specialist);
 		}
-		
+
+	}
+
+	@PostMapping(path = "/addFavoriteLevel", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> addFavoriteLevel(@RequestBody AddLevelDto addLevelDto) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.addFavoriteLevel(addLevelDto.getIdChild(), addLevelDto.getIdLevel());
+		response.setIdResponse(result);
+		if (result == Constants.ERROR_BD) {
+			response.setMessage("Error al agregar nivel");
+		} else if (result == Constants.ERROR_DUPLICATE) {
+			response.setMessage("El nivel ya está agregado");
+		} else {
+			response.setMessage("Nivel agregado correctamente");
+		}
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(path = "/listFavoriteLevels", produces = "application/json")
+	public ResponseEntity<?> listFavoriteLevels(@RequestParam int idChild) {
+		List<Level> levels = childService.listFavoriteLevels(idChild);
+		return ResponseEntity.ok(levels);
 	}
 
 }

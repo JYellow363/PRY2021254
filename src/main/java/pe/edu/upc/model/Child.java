@@ -58,7 +58,7 @@ public class Child {
 	private List<Level> favoriteLevels;
 
 	@OneToMany
-	private List<Topic> favoriteTopics;
+	private List<CustomLevelList> customLevelLists;
 
 	@OneToOne(mappedBy = "child", cascade = CascadeType.ALL)
 	private Specialist specialist;
