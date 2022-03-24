@@ -18,6 +18,7 @@ import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
+import pe.edu.upc.dto.SpecialCategoryDto;
 import pe.edu.upc.model.Child;
 import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Guardian;
@@ -79,6 +80,17 @@ public class ChildServiceImpl implements IChildService {
 	public int update(ChildUpdateDto childUpdateDto) {
 		Child child = childRepository.findById(childUpdateDto.getIdChild()).get();
 		child = convert(child, childUpdateDto);
+		Child childSave = childRepository.save(child);
+		if (childSave == null)
+			return Constants.ERROR_BD;
+		return childSave.getIdChild();
+	}
+	
+	@Transactional
+	@Override
+	public int updateSpecialCategoryName(SpecialCategoryDto specialCategoryDto) {
+		Child child = childRepository.findById(specialCategoryDto.getIdChild()).get();
+		child.setSpecialCategoryName(specialCategoryDto.getName());
 		Child childSave = childRepository.save(child);
 		if (childSave == null)
 			return Constants.ERROR_BD;
@@ -268,6 +280,7 @@ public class ChildServiceImpl implements IChildService {
 		childDto.setBirthday(child.getBirthday());
 		childDto.setGender(child.getGender());
 		childDto.setIdGuardian(child.getGuardian().getIdGuardian());
+		childDto.setSpecialCategoryName(child.getSpecialCategoryName());
 		childDto.setSymptoms(new ArrayList<Symptom>());
 		for (int i = 0; i < child.getSymptoms().size(); i++) {
 			childDto.getSymptoms().add(child.getSymptoms().get(i));
@@ -309,6 +322,7 @@ public class ChildServiceImpl implements IChildService {
 		child.setAvatar(childCreateDto.getAvatar());
 		child.setBirthday(childCreateDto.getBirthday());
 		child.setGender(childCreateDto.getGender());
+		child.setSpecialCategoryName("Recreación");
 
 		List<Symptom> symptoms = new ArrayList<Symptom>();
 		Symptom symptom = new Symptom();

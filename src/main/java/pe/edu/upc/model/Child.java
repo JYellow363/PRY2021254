@@ -47,7 +47,10 @@ public class Child {
 
 	@Column(nullable = false)
 	private String avatar;
-
+	
+	@Column(nullable = false)
+	private String specialCategoryName;
+	
 	@ManyToMany
 	private List<Symptom> symptoms;
 

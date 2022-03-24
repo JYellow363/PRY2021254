@@ -8,6 +8,7 @@ import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
+import pe.edu.upc.dto.SpecialCategoryDto;
 import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Level;
 
@@ -27,4 +28,5 @@ public interface IChildService {
 	int addLevelToCustomLevelList(AddLevelCustomDto addLevelCustomListDto);
 	int deleteLevelinCustomLevelList(AddLevelCustomDto addLevelCustomListDto);
 	int deleteCustomLevelList(int idChild, int idCustomLevelList);
+	int updateSpecialCategoryName(SpecialCategoryDto specialCategoryDto);
 }

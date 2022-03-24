@@ -21,6 +21,7 @@ import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
 import pe.edu.upc.dto.ResponseDto;
+import pe.edu.upc.dto.SpecialCategoryDto;
 import pe.edu.upc.dto.SpecialistDto;
 import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Level;
@@ -68,6 +69,20 @@ public class ChildController {
 	@PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> update(@RequestBody ChildUpdateDto child) {
 		int result = childService.update(child);
+		ResponseDto response = new ResponseDto();
+		response.setIdResponse(result);
+		if (result == Constants.ERROR_BD) {
+			response.setMessage("Error al actualizar");
+			return ResponseEntity.ok(response);
+		} else {
+			ChildDto childUpdate = childService.findById(result);
+			return ResponseEntity.ok(childUpdate);
+		}
+	}
+	
+	@PutMapping(path = "/updateSpecialCategoryName", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> updateSpecialCategoryName(@RequestBody SpecialCategoryDto specialCategoryDto) {
+		int result = childService.updateSpecialCategoryName(specialCategoryDto);
 		ResponseDto response = new ResponseDto();
 		response.setIdResponse(result);
 		if (result == Constants.ERROR_BD) {

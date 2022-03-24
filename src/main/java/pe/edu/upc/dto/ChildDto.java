@@ -22,5 +22,6 @@ public class ChildDto {
 	private String asdLevel;
 	private String avatar;
 	private int idGuardian;
+	private String specialCategoryName;
 	private List<Symptom> symptoms;
 }
