@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.edu.upc.dto.ChildCreateDto;
-import pe.edu.upc.dto.ChildDto;
-import pe.edu.upc.dto.ChildUpdateDto;
 import pe.edu.upc.dto.LevelRecordDto;
 import pe.edu.upc.dto.ObservationDto;
 import pe.edu.upc.dto.ObservationUpdateDto;

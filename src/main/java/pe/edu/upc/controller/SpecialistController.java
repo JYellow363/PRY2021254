@@ -56,6 +56,7 @@ public class SpecialistController {
 			String token = JWTGenerator.getJWTToken(userLogin.getUsername(), userLogin.getPassword());
 			response.setToken(token);
 			response.setSpecialist(specialistService.listByIdSpecialist(result));
+			response.setIdResponse(1);
 			return ResponseEntity.ok(response);
 		}
 	}
