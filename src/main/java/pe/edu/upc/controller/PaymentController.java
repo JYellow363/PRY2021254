@@ -29,7 +29,8 @@ public class PaymentController {
 			response.setMessage("Los datos no son correctos");
 			return ResponseEntity.ok(response);
 		} else {
-			return ResponseEntity.ok("Pago exitoso");
+			response.setMessage("Los datos no son correctos");
+			return ResponseEntity.ok(response);
 		}
 	}
 }
