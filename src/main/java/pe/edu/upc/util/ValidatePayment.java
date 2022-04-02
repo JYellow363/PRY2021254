@@ -8,9 +8,9 @@ public class ValidatePayment {
 	private static PaymentDto noBalancePayment = new PaymentDto("4558896596945415", "06/23", "158");
 
 	public static int validate(PaymentDto payment) {
-		if (payment.equals(truePayment)) {
+		if (truePayment.equals(payment)) {
 			return 1;
-		} else if (payment.equals(noBalancePayment)) {
+		} else if (noBalancePayment.equals(payment)) {
 			return 0;
 		} else
 			return -1;
