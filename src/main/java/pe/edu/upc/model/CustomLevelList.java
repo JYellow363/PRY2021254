@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class CustomLevelList {
 	
 	private String name;
 
-	@OneToMany
+	@ManyToMany
 	private List<Level> levels;
 
 }

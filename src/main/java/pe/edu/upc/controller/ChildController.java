@@ -121,11 +121,11 @@ public class ChildController {
 			SpecialistDto specialist = specialistService.listByIdSpecialist(result);
 			return ResponseEntity.ok(specialist);
 		}
-
 	}
 
 	@PostMapping(path = "/addFavoriteLevel", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> addFavoriteLevel(@RequestBody AddLevelDto addLevelDto) {
+		try {
 		ResponseDto response = new ResponseDto();
 		int result = childService.addFavoriteLevel(addLevelDto.getIdChild(), addLevelDto.getIdLevel());
 		response.setIdResponse(result);
@@ -137,6 +137,11 @@ public class ChildController {
 			response.setMessage("Nivel agregado correctamente");
 		}
 		return ResponseEntity.ok(response);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.ok(new ResponseDto());
+		}
+		
 	}
 
 	@DeleteMapping(path = "/deleteFavoriteLevel", produces = "application/json")

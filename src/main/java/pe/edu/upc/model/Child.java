@@ -57,7 +57,7 @@ public class Child {
 	@ManyToOne
 	private Guardian guardian;
 
-	@OneToMany
+	@ManyToMany
 	private List<Level> favoriteLevels;
 
 	@OneToMany
