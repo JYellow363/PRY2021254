@@ -195,7 +195,7 @@ public class ChildServiceImpl implements IChildService {
 		if (childSave == null) {
 			return Constants.ERROR_BD;
 		} else {
-			return Constants.SUCCESSFULLY;
+			return customLevelListSave.getIdCustomLevelList();
 		}
 	}
 

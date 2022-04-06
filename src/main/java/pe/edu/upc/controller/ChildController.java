@@ -163,7 +163,7 @@ public class ChildController {
 	}
 
 	@PostMapping(path = "/addCustomLevelList", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> addFavoriteLevel(@RequestBody AddCustomLevelListDto addCustomLevelDto) {
+	public ResponseEntity<?> addCustomLevelList(@RequestBody AddCustomLevelListDto addCustomLevelDto) {
 		ResponseDto response = new ResponseDto();
 		int result = childService.addCustomLevelList(addCustomLevelDto);
 		response.setIdResponse(result);
