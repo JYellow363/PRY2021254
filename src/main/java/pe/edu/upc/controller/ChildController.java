@@ -20,6 +20,7 @@ import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
+import pe.edu.upc.dto.CustomLevelListUpdateDto;
 import pe.edu.upc.dto.ResponseDto;
 import pe.edu.upc.dto.SpecialCategoryDto;
 import pe.edu.upc.dto.SpecialistDto;
@@ -163,7 +164,7 @@ public class ChildController {
 	}
 
 	@PostMapping(path = "/addCustomLevelList", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> addCustomLevelList(@RequestBody AddCustomLevelListDto addCustomLevelDto) {
+	public ResponseEntity<?> addFavoriteLevel(@RequestBody AddCustomLevelListDto addCustomLevelDto) {
 		ResponseDto response = new ResponseDto();
 		int result = childService.addCustomLevelList(addCustomLevelDto);
 		response.setIdResponse(result);
@@ -171,6 +172,19 @@ public class ChildController {
 			response.setMessage("Error al agregar lista personalizada");
 		} else {
 			response.setMessage("Lista agregada correctamente");
+		}
+		return ResponseEntity.ok(response);
+	}
+	
+	@PutMapping(path = "/updateNameCustomLevelList", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> updateNameCustomLevelList(@RequestBody CustomLevelListUpdateDto customLevelListUpdateDto) {
+		ResponseDto response = new ResponseDto();
+		int result = childService.updateCustomLevelList(customLevelListUpdateDto);
+		response.setIdResponse(result);
+		if (result == Constants.ERROR_BD) {
+			response.setMessage("Error al actualizar lista personalizada");
+		} else {
+			response.setMessage("Lista actualizada correctamente");
 		}
 		return ResponseEntity.ok(response);
 	}

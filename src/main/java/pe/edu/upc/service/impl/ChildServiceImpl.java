@@ -18,6 +18,7 @@ import pe.edu.upc.dto.AddLevelDto;
 import pe.edu.upc.dto.ChildCreateDto;
 import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.dto.ChildUpdateDto;
+import pe.edu.upc.dto.CustomLevelListUpdateDto;
 import pe.edu.upc.dto.SpecialCategoryDto;
 import pe.edu.upc.model.Child;
 import pe.edu.upc.model.CustomLevelList;
@@ -198,6 +199,20 @@ public class ChildServiceImpl implements IChildService {
 			return customLevelListSave.getIdCustomLevelList();
 		}
 	}
+	
+	@Transactional
+	@Override
+	public int updateCustomLevelList(CustomLevelListUpdateDto customLevelListUpdateDto) {
+		CustomLevelList customLevelList = customLevelListRepository.findById(customLevelListUpdateDto.getIdCustomLevelList()).get();
+		customLevelList.setName(customLevelListUpdateDto.getName());
+		CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
+		if (customLevelListSave == null) {
+			return Constants.ERROR_BD;
+		} else {
+			return Constants.SUCCESSFULLY;
+		}
+	}
+
 
 	@Override
 	public List<CustomLevelList> listCustomLevelLists(int idChild) {
