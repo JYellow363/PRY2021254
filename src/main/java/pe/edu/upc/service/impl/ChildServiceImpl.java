@@ -24,12 +24,14 @@ import pe.edu.upc.model.Child;
 import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Guardian;
 import pe.edu.upc.model.Level;
+import pe.edu.upc.model.LevelRecord;
 import pe.edu.upc.model.Specialist;
 import pe.edu.upc.model.Symptom;
 import pe.edu.upc.model.UserLogin;
 import pe.edu.upc.repository.IChildRepository;
 import pe.edu.upc.repository.ICustomLevelListRepository;
 import pe.edu.upc.repository.IGuardianRepository;
+import pe.edu.upc.repository.ILevelRecordRepository;
 import pe.edu.upc.repository.ILevelRepository;
 import pe.edu.upc.repository.ISymptomRepository;
 import pe.edu.upc.service.IChildService;
@@ -41,6 +43,8 @@ public class ChildServiceImpl implements IChildService {
 
 	@Autowired
 	private ICustomLevelListRepository customLevelListRepository;
+	@Autowired
+	private ILevelRecordRepository levelRecordRepository;
 	@Autowired
 	private IChildRepository childRepository;
 	@Autowired
@@ -102,6 +106,7 @@ public class ChildServiceImpl implements IChildService {
 	@Override
 	public int delete(int idChild) {
 		try {
+			levelRecordRepository.deleteByChildIdChild(idChild);
 			childRepository.deleteById(idChild);
 		} catch (Exception e) {
 			return Constants.ERROR_BD;
