@@ -82,7 +82,7 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 
 	private LevelRecordDto listByChildrenAndLevel(int idChild, int idLevel) {
 		Level level = levelRepository.findById(idLevel).get();
-		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChildAndLevelIdLevel(idChild, idLevel);
+		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChildAndLevelIdLevelOrderByDate(idChild, idLevel);
 		for (int i = 0; i < levelRecords.size(); i++) {
 			levelRecords.get(i).getChild().setGuardian(null);
 		}
@@ -95,7 +95,7 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 
 	private LevelRecordDto listByChildrenAndTopic(int idChild, int idTopic) {
 		Topic topic = topicRepository.findById(idTopic).get();
-		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChildAndLevelTopicIdTopic(idChild, idTopic);
+		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChildAndLevelTopicIdTopicOrderByDate(idChild, idTopic);
 		for (int i = 0; i < levelRecords.size(); i++) {
 			levelRecords.get(i).getChild().setGuardian(null);
 		}
@@ -109,7 +109,7 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 	private LevelRecordDto listByChildrenAndCategory(int idChild, int idCategory) {
 		Category category = categoryRepository.findById(idCategory).get();
 		List<LevelRecord> levelRecords = levelRecordRepository
-				.findByChildIdChildAndLevelTopicCategoryIdCategory(idChild, idCategory);
+				.findByChildIdChildAndLevelTopicCategoryIdCategoryOrderByDate(idChild, idCategory);
 		for (int i = 0; i < levelRecords.size(); i++) {
 			levelRecords.get(i).getChild().setGuardian(null);
 		}
@@ -123,7 +123,7 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 	
 	@Override
 	public List<LevelHistoricalRecordDto> listByIdChild(int idChild) {
-		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChild(idChild);
+		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdChildOrderByDate(idChild);
 		List<LevelHistoricalRecordDto> levelHistoricalRecordsDto = new ArrayList<LevelHistoricalRecordDto>();
 		for (LevelRecord levelRecord: levelRecords) {
 			levelHistoricalRecordsDto.add(convert(levelRecord));

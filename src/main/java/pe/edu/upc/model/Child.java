@@ -60,7 +60,7 @@ public class Child {
 	@ManyToMany
 	private List<Level> favoriteLevels;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<CustomLevelList> customLevelLists;
 
 	@OneToOne(mappedBy = "child", cascade = CascadeType.ALL)

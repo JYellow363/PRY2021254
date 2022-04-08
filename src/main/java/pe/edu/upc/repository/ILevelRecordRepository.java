@@ -9,10 +9,15 @@ import pe.edu.upc.model.LevelRecord;
 
 @Repository
 public interface ILevelRecordRepository extends JpaRepository<LevelRecord, Integer> {
-	List<LevelRecord> findByChildIdChild(int idChild);
-	List<LevelRecord> findByChildIdChildAndLevelIdLevel(int idChild, int idLevel);
-	List<LevelRecord> findByChildIdChildAndLevelTopicIdTopic(int idChild, int idTopic);
-	List<LevelRecord> findByChildIdChildAndLevelTopicCategoryIdCategory(int idChild, int idLevel);
+	
+	List<LevelRecord> findByChildIdChildOrderByDate(int idChild);
+	
+	List<LevelRecord> findByChildIdChildAndLevelIdLevelOrderByDate(int idChild, int idLevel);
+	
+	List<LevelRecord> findByChildIdChildAndLevelTopicIdTopicOrderByDate(int idChild, int idTopic);
+	
+	List<LevelRecord> findByChildIdChildAndLevelTopicCategoryIdCategoryOrderByDate(int idChild, int idLevel);
+	
 	
 	int countByIsSuccessfulAndChildIdChild(boolean isSuccessful, int idChild);
 	int countByIsSuccessfulAndChildIdChildAndLevelIdLevel(boolean isSuccessful,int idChild, int idLevel);
