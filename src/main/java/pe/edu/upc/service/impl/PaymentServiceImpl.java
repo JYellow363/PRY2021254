@@ -1,5 +1,7 @@
 package pe.edu.upc.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class PaymentServiceImpl implements IPaymentService {
 	@Autowired
 	private IGuardianRepository guardianRepository;
 
+	@Transactional
 	@Override
 	public int payPremium(PaymentDto payment) {
 		 int result = ValidatePayment.validate(payment);
