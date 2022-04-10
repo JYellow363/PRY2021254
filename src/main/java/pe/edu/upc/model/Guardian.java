@@ -27,7 +27,7 @@ public class Guardian {
 	private int idGuardian;
 	
 	@Column(nullable = false)
-	private Boolean premium;
+	private boolean premium;
 	
 	@Column(length = 80, nullable = false)
 	private String names;

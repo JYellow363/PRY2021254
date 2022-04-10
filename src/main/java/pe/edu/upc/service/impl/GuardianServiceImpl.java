@@ -85,6 +85,7 @@ public class GuardianServiceImpl implements IGuardianService {
 		guardianDto.setIdUserLogin(guardian.getUserLogin().getIdUserLogin());
 		guardianDto.setUsername(guardian.getUserLogin().getUsername());
 		guardianDto.setActive(guardian.getUserLogin().isActive());
+		guardianDto.setPremium(guardian.isPremium());
 		return guardianDto;
 	}
 
