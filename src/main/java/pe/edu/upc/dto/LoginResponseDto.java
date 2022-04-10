@@ -25,6 +25,7 @@ public class LoginResponseDto {
 	private String names;
 	private String lastNames;
 	private Date birthday;
+	private boolean premium;
 	
 	public LoginResponseDto(int status, String token, GuardianDto guardianDto) {
 		setIdResponse(status);
@@ -36,6 +37,7 @@ public class LoginResponseDto {
 		setNames(guardianDto.getNames());
 		setLastNames(guardianDto.getLastNames());
 		setBirthday(guardianDto.getBirthday());
+		setPremium(guardianDto.isPremium());
 	}
 }
 
