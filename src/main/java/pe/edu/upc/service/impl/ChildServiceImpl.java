@@ -24,7 +24,6 @@ import pe.edu.upc.model.Child;
 import pe.edu.upc.model.CustomLevelList;
 import pe.edu.upc.model.Guardian;
 import pe.edu.upc.model.Level;
-import pe.edu.upc.model.LevelRecord;
 import pe.edu.upc.model.Specialist;
 import pe.edu.upc.model.Symptom;
 import pe.edu.upc.model.UserLogin;

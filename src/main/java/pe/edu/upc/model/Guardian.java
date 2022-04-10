@@ -26,6 +26,9 @@ public class Guardian {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idGuardian;
 	
+	@Column(nullable = false)
+	private Boolean premium;
+	
 	@Column(length = 80, nullable = false)
 	private String names;
 	

@@ -30,6 +30,7 @@ public class GuardianServiceImpl implements IGuardianService {
 			return Constants.ERROR_DUPLICATE;
 
 		Guardian guardian = convert(guardianCreateDto);
+		guardian.setPremium(false);
 		Guardian guardianSave = guardianRepository.save(guardian);
 		if (guardianSave == null)
 			return Constants.ERROR_BD;

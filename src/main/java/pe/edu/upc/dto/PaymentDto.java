@@ -15,6 +15,8 @@ public class PaymentDto {
 	private String cardNumber;
 	private String dueDate;
 	private String ccv;
+	private int idGuardian;
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(cardNumber, ccv, dueDate);
