@@ -21,4 +21,5 @@ public class GuardianDto {
 	private int idUserLogin;
 	private String username;
 	private boolean isActive;
+	private boolean premium;
 }
