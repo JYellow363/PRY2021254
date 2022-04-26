@@ -107,7 +107,7 @@ public class ChildController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping(path = "/activateSpecialist", produces = "application/json")
+	@PostMapping(path = "/activateSpecialist", produces = "application/json")
 	public ResponseEntity<?> activateSpecialist(@RequestParam int idChild) {
 		ResponseDto response = new ResponseDto();
 		int result = childService.activateSpecialist(idChild);
@@ -117,6 +117,9 @@ public class ChildController {
 			return ResponseEntity.ok(response);
 		} else if (result == Constants.ERROR_EMAIL) {
 			response.setMessage("Error en el envío de credenciales");
+			return ResponseEntity.ok(response);
+		} else if (result == Constants.ERROR_DUPLICATE) {
+			response.setMessage("El niño ya tiene especialista creado");
 			return ResponseEntity.ok(response);
 		} else {
 			SpecialistDto specialist = specialistService.listByIdSpecialist(result);

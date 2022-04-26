@@ -118,6 +118,11 @@ public class ChildServiceImpl implements IChildService {
 	public int activateSpecialist(int idChild) {
 		Specialist specialist = new Specialist();
 		Child child = childRepository.findById(idChild).get();
+		
+		if(child.getSpecialist() != null) {
+			return Constants.ERROR_DUPLICATE;
+		}
+		
 		UserLogin userLogin = new UserLogin();
 		userLogin.setActive(false);
 		String username = RandomStringGenerator.getString();
