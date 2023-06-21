@@ -44,10 +44,11 @@ public class PRY2021254Application {
 			
 			http.csrf().disable()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-					.authorizeRequests().antMatchers(HttpMethod.POST, "/guardians/create").permitAll()
-					.antMatchers(HttpMethod.POST, "/guardians/login").permitAll()
-					.antMatchers(HttpMethod.GET, "/guardians/restorePassword").permitAll()
-					.antMatchers(HttpMethod.POST, "/specialists/login").permitAll()
+					.authorizeRequests()
+					.antMatchers(HttpMethod.POST, "/guardians").permitAll()
+					.antMatchers(HttpMethod.POST, "/auth/login/guardians").permitAll()
+					.antMatchers(HttpMethod.PUT, "/auth/password-reset").permitAll()
+					.antMatchers(HttpMethod.POST, "/auth/login/specialists").permitAll()
 					.antMatchers("/swagger-ui/**", "/v2/api-docs/**", "/swagger-resources/**").permitAll()
 					.antMatchers("/**").authenticated();
 

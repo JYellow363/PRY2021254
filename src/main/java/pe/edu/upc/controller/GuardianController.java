@@ -1,28 +1,21 @@
 package pe.edu.upc.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import pe.edu.upc.dto.GuardianCreateDto;
-import pe.edu.upc.dto.GuardianDto;
-import pe.edu.upc.dto.GuardianUpdateDto;
-import pe.edu.upc.dto.LoginResponseDto;
-import pe.edu.upc.dto.ResponseDto;
-import pe.edu.upc.dto.UserLoginDto;
+import pe.edu.upc.dto.*;
+import pe.edu.upc.service.IChildService;
 import pe.edu.upc.service.IGuardianService;
 import pe.edu.upc.service.IUserLoginService;
 import pe.edu.upc.util.Constants;
 import pe.edu.upc.util.JWTGenerator;
 
+import java.util.List;
+
 @CrossOrigin
+@Api(tags="Guardian")
 @RestController
 @RequestMapping(path = "/guardians")
 public class GuardianController {
@@ -31,15 +24,21 @@ public class GuardianController {
 	private IGuardianService guardianService;
 
 	@Autowired
-	private IUserLoginService userLoginService;
+	private IChildService childService;
 
-	@GetMapping(path = "/listByIdGuardian", produces = "application/json")
-	public ResponseEntity<?> listByIdGuardian(@RequestParam int idGuardian) {
+	@GetMapping(path = "/{idGuardian}", produces = "application/json")
+	public ResponseEntity<?> listByIdGuardian(@PathVariable int idGuardian) {
 		GuardianDto guardian = guardianService.listByIdGuardian(idGuardian);
 		return ResponseEntity.ok(guardian);
 	}
 
-	@PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
+	@GetMapping(path = "/{idGuardian}/children", produces = "application/json")
+	public ResponseEntity<?> listChildrenByIdGuardian(@PathVariable int idGuardian) {
+		List<ChildDto> children = childService.findByGuardianIdGuardian(idGuardian);
+		return ResponseEntity.ok(children);
+	}
+
+	@PostMapping(path = "", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> create(@RequestBody GuardianCreateDto guardian) {
 		int result = guardianService.save(guardian);
 		ResponseDto response = new ResponseDto();
@@ -56,26 +55,9 @@ public class GuardianController {
 		}
 	}
 
-	@PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> login(@RequestBody UserLoginDto userLogin) {
-		int result = userLoginService.loginGuardian(userLogin);
-		ResponseDto response = new ResponseDto();
-		response.setIdResponse(result);
-		if (result == Constants.ERROR_PASSWORD) {
-			response.setMessage("Contraseña incorrecta");
-			return ResponseEntity.ok(response);
-		} else if (result == Constants.ERROR_EXIST) {
-			response.setMessage("El nombre de usuario no existe");
-			return ResponseEntity.ok(response);
-		} else {
-			String token = JWTGenerator.getJWTToken(userLogin.getUsername(), userLogin.getPassword());
-			LoginResponseDto loginResponse = new LoginResponseDto(1, token, guardianService.listByIdGuardian(result));
-			return ResponseEntity.ok(loginResponse);
-		}
-	}
-
-	@PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> update(@RequestBody GuardianUpdateDto guardian) {
+	@PutMapping(path = "/{idGuardian}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> update(@PathVariable int idGuardian, @RequestBody GuardianUpdateDto guardian) {
+		guardian.setIdGuardian(idGuardian);
 		int result = guardianService.update(guardian);
 		ResponseDto response = new ResponseDto();
 		response.setIdResponse(result);
@@ -89,23 +71,6 @@ public class GuardianController {
 			GuardianDto guardianUpdate = guardianService.listByIdGuardian(result);
 			return ResponseEntity.ok(guardianUpdate);
 		}
-	}
-
-	@GetMapping(path = "/restorePassword", produces = "application/json")
-	public ResponseEntity<?> restorePassword(@RequestParam String email) {
-		int result = userLoginService.restorePassword(email);
-		ResponseDto response = new ResponseDto();
-		response.setIdResponse(result);
-		if (result == Constants.ERROR_EXIST) {
-			response.setMessage("Email no registrado");
-		} else if (result == Constants.ERROR_BD) {
-			response.setMessage("Error al restaurar contraseña");
-		} else if (result == Constants.ERROR_EMAIL) {
-			response.setMessage("Error al enviar correo");
-		} else {
-			response.setMessage("Correo enviado");
-		}
-		return ResponseEntity.ok(response);
 	}
 
 }

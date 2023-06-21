@@ -1,5 +1,6 @@
 package pe.edu.upc.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,15 +15,16 @@ import pe.edu.upc.service.IPaymentService;
 import pe.edu.upc.util.Constants;
 
 @CrossOrigin
+@Api(tags="Payment")
 @RestController
-@RequestMapping(path = "/payment")
+@RequestMapping(path = "/payments")
 public class PaymentController {
 
 	@Autowired
 	private IPaymentService paymentService;
 
 	// Fake payment
-	@PostMapping(path = "/payPremium", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> payPremium(@RequestBody PaymentDto payment) {
 		int result = paymentService.payPremium(payment);
 		ResponseDto response = new ResponseDto();

@@ -208,20 +208,6 @@ public class ChildServiceImpl implements IChildService {
 			return customLevelListSave.getIdCustomLevelList();
 		}
 	}
-	
-	@Transactional
-	@Override
-	public int updateCustomLevelList(CustomLevelListUpdateDto customLevelListUpdateDto) {
-		CustomLevelList customLevelList = customLevelListRepository.findById(customLevelListUpdateDto.getIdCustomLevelList()).get();
-		customLevelList.setName(customLevelListUpdateDto.getName());
-		CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
-		if (customLevelListSave == null) {
-			return Constants.ERROR_BD;
-		} else {
-			return Constants.SUCCESSFULLY;
-		}
-	}
-
 
 	@Override
 	public List<CustomLevelList> listCustomLevelLists(int idChild) {
@@ -253,45 +239,6 @@ public class ChildServiceImpl implements IChildService {
 			return Constants.ERROR_BD;
 		}
 		return Constants.SUCCESSFULLY;
-	}
-
-	@Transactional
-	@Override
-	public int addLevelToCustomLevelList(AddLevelCustomDto addLevelCustomListDto) {
-		CustomLevelList customLevelList = customLevelListRepository
-				.findById(addLevelCustomListDto.getIdCustomLevelList()).get();
-		Level level = levelRepository.findById(addLevelCustomListDto.getIdLevel()).get();
-		if (customLevelList.getLevels().contains(level)) {
-			return Constants.ERROR_DUPLICATE;
-		} else {
-			customLevelList.getLevels().add(level);
-			customLevelList.setLevels(customLevelList.getLevels());
-			CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
-			if (customLevelListSave == null) {
-				return Constants.ERROR_BD;
-			} else {
-				return Constants.SUCCESSFULLY;
-			}
-		}
-	}
-
-	@Transactional
-	@Override
-	public int deleteLevelinCustomLevelList(AddLevelCustomDto addLevelCustomListDto) {
-		CustomLevelList customLevelList = customLevelListRepository
-				.findById(addLevelCustomListDto.getIdCustomLevelList()).get();
-		List<Level> newLevels = new ArrayList<Level>();
-		for (Level level : customLevelList.getLevels()) {
-			if (level.getIdLevel() != addLevelCustomListDto.getIdLevel())
-				newLevels.add(level);
-		}
-		customLevelList.setLevels(newLevels);
-		CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);
-		if (customLevelListSave == null) {
-			return Constants.ERROR_BD;
-		} else {
-			return Constants.SUCCESSFULLY;
-		}
 	}
 
 	private ChildDto convert(Child child) {

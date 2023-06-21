@@ -10,11 +10,11 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pe.edu.upc</groupId>
-	<artifactId>PRY2021254-BD</artifactId>
+	<artifactId>PRY2021254</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>PRY2021254-BD</name>
-	<description>PRY2021254-BD</description>
+	<name>PRY2021254</name>
+	<description>PRY2021254</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

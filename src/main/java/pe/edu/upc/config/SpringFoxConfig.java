@@ -31,8 +31,8 @@ public class SpringFoxConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("API TEApprendo", "", "", "",
-				new Contact("GitHub", "https://github.com/JYellow363/PRY2021254", ""), "", "", Collections.emptyList());
+		return new ApiInfo("RESTful API TEApprendo", "RESTful API de la aplicación TEApprendo para mejorar el aprendizaje en niños con autismo.", "1.0.0", "",
+				new Contact("GitHub", "https://github.com/JYellow363/PRY2021254", "pry2021254@gmail.com"), "", "", Collections.emptyList());
 	}
 
 	private ApiKey apiKey() {

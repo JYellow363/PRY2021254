@@ -26,9 +26,6 @@ public interface IChildService {
 	List<CustomLevelList> listCustomLevelLists(int idChild);
 	CustomLevelList listCustomLevelListById(int idChild);
 	int deleteFavoriteLevel(AddLevelDto addLevelDto);
-	int addLevelToCustomLevelList(AddLevelCustomDto addLevelCustomListDto);
-	int deleteLevelinCustomLevelList(AddLevelCustomDto addLevelCustomListDto);
 	int deleteCustomLevelList(int idChild, int idCustomLevelList);
 	int updateSpecialCategoryName(SpecialCategoryDto specialCategoryDto);
-	int updateCustomLevelList(CustomLevelListUpdateDto customLevelListUpdateDto);
 }
