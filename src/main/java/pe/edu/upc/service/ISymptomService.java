@@ -6,5 +6,5 @@ import pe.edu.upc.model.Symptom;
 
 public interface ISymptomService {
 	public List<Symptom> list();
-	public Symptom listByIdSymptom(int idSymptom);
+	public Symptom listByIdSymptom(int id);
 }

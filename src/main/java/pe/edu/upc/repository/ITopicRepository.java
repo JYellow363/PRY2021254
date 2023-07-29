@@ -9,5 +9,5 @@ import pe.edu.upc.model.Topic;
 
 @Repository
 public interface ITopicRepository extends JpaRepository<Topic, Integer> {
-	List<Topic> findByCategoryIdCategory(int idCategory);
+	List<Topic> findByCategoryId(int id);
 }

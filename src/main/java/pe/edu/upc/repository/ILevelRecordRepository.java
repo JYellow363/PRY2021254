@@ -10,15 +10,15 @@ import pe.edu.upc.model.LevelRecord;
 @Repository
 public interface ILevelRecordRepository extends JpaRepository<LevelRecord, Integer> {
 	
-	void deleteByChildIdChild(int idChild);
+	void deleteByChildId(int id);
 	
-	List<LevelRecord> findByChildIdChildOrderByDate(int idChild);
-	List<LevelRecord> findByChildIdChildAndLevelIdLevelOrderByDate(int idChild, int idLevel);
-	List<LevelRecord> findByChildIdChildAndLevelTopicIdTopicOrderByDate(int idChild, int idTopic);
-	List<LevelRecord> findByChildIdChildAndLevelTopicCategoryIdCategoryOrderByDate(int idChild, int idLevel);
+	List<LevelRecord> findByChildIdOrderByDate(int id);
+	List<LevelRecord> findByChildIdAndLevelIdOrderByDate(int id, int idLevel);
+	List<LevelRecord> findByChildIdAndLevelTopicIdOrderByDate(int id, int idTopic);
+	List<LevelRecord> findByChildIdAndLevelTopicCategoryIdOrderByDate(int id, int idCategory);
 	
-	int countByIsSuccessfulAndChildIdChild(boolean isSuccessful, int idChild);
-	int countByIsSuccessfulAndChildIdChildAndLevelIdLevel(boolean isSuccessful,int idChild, int idLevel);
-	int countByIsSuccessfulAndChildIdChildAndLevelTopicIdTopic(boolean isSuccessful,int idChild, int idTopic);
-	int countByIsSuccessfulAndChildIdChildAndLevelTopicCategoryIdCategory(boolean isSuccessful,int idChild, int idLevel);
+	int countByIsSuccessfulAndChildId(boolean isSuccessful, int id);
+	int countByIsSuccessfulAndChildIdAndLevelId(boolean isSuccessful,int idChild, int idLevel);
+	int countByIsSuccessfulAndChildIdAndLevelTopicId(boolean isSuccessful,int id, int idTopic);
+	int countByIsSuccessfulAndChildIdAndLevelTopicCategoryId(boolean isSuccessful,int id, int idCategory);
 }

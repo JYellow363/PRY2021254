@@ -1,28 +1,23 @@
 package pe.edu.upc.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "specialists")
 public class Specialist {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idSpecialist;
+	private int id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Child child;
@@ -34,5 +29,5 @@ public class Specialist {
 	private String lastNames;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private UserLogin userLogin;
+	private Users user;
 }

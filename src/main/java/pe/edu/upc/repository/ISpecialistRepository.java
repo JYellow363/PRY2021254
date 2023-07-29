@@ -7,5 +7,5 @@ import pe.edu.upc.model.Specialist;
 
 @Repository
 public interface ISpecialistRepository extends JpaRepository<Specialist, Integer> {
-	Specialist findByChildIdChild(int idChild);
+	Specialist findByChildId(int id);
 }

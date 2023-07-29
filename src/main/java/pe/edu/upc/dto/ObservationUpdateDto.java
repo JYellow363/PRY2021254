@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ObservationUpdateDto {
-	private int idObservation;
+	private int id;
 	private String title;
 	private String description;
 }

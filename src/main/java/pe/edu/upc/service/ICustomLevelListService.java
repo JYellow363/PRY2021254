@@ -5,6 +5,6 @@ import pe.edu.upc.dto.CustomLevelListUpdateDto;
 
 public interface ICustomLevelListService {
     int addLevelToCustomLevelList(AddLevelCustomDto addLevelCustomListDto);
-    int deleteLevelinCustomLevelList(AddLevelCustomDto idCustomLevelList);
+    int deleteLevelinCustomLevelList(AddLevelCustomDto addLevelCustomListDto);
     int updateCustomLevelList(CustomLevelListUpdateDto customLevelListUpdateDto);
 }

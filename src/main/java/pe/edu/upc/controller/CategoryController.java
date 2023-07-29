@@ -3,17 +3,20 @@ package pe.edu.upc.controller;
 import java.util.List;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import pe.edu.upc.dto.ChildDto;
 import pe.edu.upc.model.Category;
 import pe.edu.upc.model.Topic;
 import pe.edu.upc.service.ICategoryService;
 import pe.edu.upc.service.ITopicService;
 
 @CrossOrigin
-@Api(tags="Category")
+@Api(tags="Categories")
 @RestController
 @RequestMapping(path = "/categories")
 public class CategoryController {
@@ -25,20 +28,29 @@ public class CategoryController {
 	private ITopicService topicService;
 	
 	@GetMapping(path = "", produces = "application/json")
+	@ApiResponses({
+			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = Category.class)
+	})
 	public ResponseEntity<?> list() {
 		List<Category> categories = categoryService.findAll();
 		return ResponseEntity.ok(categories);
 	}
 
-	@GetMapping(path = "/{idCategory}", produces = "application/json")
-	public ResponseEntity<?> listByIdCategory(@PathVariable int idCategory) {
-		Category category = categoryService.findById(idCategory);
+	@GetMapping(path = "/{id}", produces = "application/json")
+	@ApiResponses({
+			@ApiResponse(code = 200, message="Ok", response = Category.class)
+	})
+	public ResponseEntity<?> listByIdCategory(@PathVariable int id) {
+		Category category = categoryService.findById(id);
 		return ResponseEntity.ok(category);
 	}
 
-	@GetMapping(path = "/{idCategory}/topics", produces = "application/json")
-	public ResponseEntity<?> listTopicsByIdCategory(@PathVariable int idCategory) {
-		List<Topic> topics = topicService.findByIdCategory(idCategory);
+	@GetMapping(path = "/{id}/topics", produces = "application/json")
+	@ApiResponses({
+			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = Topic.class)
+	})
+	public ResponseEntity<?> listTopicsByIdCategory(@PathVariable int id) {
+		List<Topic> topics = topicService.findByIdCategory(id);
 		return ResponseEntity.ok(topics);
 	}
 }

@@ -21,8 +21,8 @@ public class SymptomServiceImpl implements ISymptomService {
 	}
 
 	@Override
-	public Symptom listByIdSymptom(int idSymptom) {
-		return symptomRepository.findById(idSymptom).get();
+	public Symptom listByIdSymptom(int id) {
+		return symptomRepository.findById(id).get();
 	}
 	
 	

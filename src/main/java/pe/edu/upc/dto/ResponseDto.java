@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ResponseDto {
-	private int idResponse;
+	private int id;
 	private String token;
 	private String message;
 	private SpecialistDto specialist;

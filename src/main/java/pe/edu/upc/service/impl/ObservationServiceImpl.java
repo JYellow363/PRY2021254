@@ -26,14 +26,14 @@ public class ObservationServiceImpl implements IObservationService {
 	private IChildRepository childRepository;
 
 	@Override
-	public List<Observation> listByIdChild(int idChild) {
-		List<Observation> observations = observationRepository.findByChildIdChild(idChild);
+	public List<Observation> listByIdChild(int id) {
+		List<Observation> observations = observationRepository.findByChildId(id);
 		return observations == null ? new ArrayList<Observation>() : observations;
 	}
 
 	@Override
-	public Observation listById(int idObservation) {
-		return observationRepository.findById(idObservation).get();
+	public Observation listById(int id) {
+		return observationRepository.findById(id).get();
 	}
 
 	@Transactional
@@ -42,7 +42,7 @@ public class ObservationServiceImpl implements IObservationService {
 		Observation observationSave = observationRepository.save(convert(observationUpdateDto));
 		if (observationSave == null)
 			return Constants.ERROR_BD;
-		return observationSave.getIdObservation();
+		return observationSave.getId();
 	}
 
 	@Transactional
@@ -51,14 +51,14 @@ public class ObservationServiceImpl implements IObservationService {
 		Observation observationSave = observationRepository.save(convert(observationDto));
 		if (observationSave == null)
 			return Constants.ERROR_BD;
-		return observationSave.getIdObservation();
+		return observationSave.getId();
 	}
 
 	@Transactional
 	@Override
-	public int delete(int idObservation) {
+	public int delete(int id) {
 		try {
-			observationRepository.deleteById(idObservation);
+			observationRepository.deleteById(id);
 		} catch (Exception e) {
 			return Constants.ERROR_BD;
 		}
@@ -75,7 +75,7 @@ public class ObservationServiceImpl implements IObservationService {
 	}
 
 	private Observation convert(ObservationUpdateDto observationUpdateDto) {
-		Observation observation = observationRepository.findById(observationUpdateDto.getIdObservation()).get();
+		Observation observation = observationRepository.findById(observationUpdateDto.getId()).get();
 		observation.setTitle(observationUpdateDto.getTitle());
 		observation.setDescription(observationUpdateDto.getDescription());
 		return observation;

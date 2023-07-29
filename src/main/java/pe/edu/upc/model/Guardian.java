@@ -1,30 +1,24 @@
 package pe.edu.upc.model;
 
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "guardians")
 public class Guardian {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idGuardian;
+	private int id;
 	
 	@Column(nullable = false)
 	private boolean premium;
@@ -42,6 +36,6 @@ public class Guardian {
 	private String email;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private UserLogin userLogin;
+	private Users user;
 	
 }

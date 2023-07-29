@@ -13,7 +13,7 @@ import pe.edu.upc.model.Level;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LevelHistoricalRecordDto {
-	private int idLevelRecord;
+	private int id;
 	private Level level;
 	private Date date;
 	private boolean isSuccessful;

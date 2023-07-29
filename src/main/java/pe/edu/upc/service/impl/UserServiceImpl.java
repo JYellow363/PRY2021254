@@ -1,59 +1,58 @@
 package pe.edu.upc.service.impl;
 
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import pe.edu.upc.dto.UserLoginDto;
-import pe.edu.upc.model.UserLogin;
-import pe.edu.upc.repository.IUserLoginRepository;
-import pe.edu.upc.service.IUserLoginService;
+import pe.edu.upc.dto.UserDto;
+import pe.edu.upc.model.Users;
+import pe.edu.upc.repository.IUserRepository;
+import pe.edu.upc.service.IUserService;
 import pe.edu.upc.util.Constants;
 import pe.edu.upc.util.RandomStringGenerator;
 
+import javax.mail.internet.MimeMessage;
+
 @Service
-public class UserLoginServiceImpl implements IUserLoginService {
+public class UserServiceImpl implements IUserService {
 	@Autowired
-	private IUserLoginRepository userLoginRepository;
+	private IUserRepository userRepository;
 	@Autowired
 	private JavaMailSender sender;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	public int loginGuardian(UserLoginDto userLoginDto) {
-		UserLogin userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
-		if (userLogin == null)
+	public int loginGuardian(UserDto userLoginDto) {
+		Users users = userRepository.findByUsername(userLoginDto.getUsername());
+		if (users == null)
 			return Constants.ERROR_EXIST;
-		if (!passwordEncoder.matches(userLoginDto.getPassword(), userLogin.getPassword()))
+		if (!passwordEncoder.matches(userLoginDto.getPassword(), users.getPassword()))
 			return Constants.ERROR_PASSWORD;
-		return userLogin.getGuardian().getIdGuardian();
+		return users.getGuardian().getId();
 	}
 
 	@Override
-	public int loginSpecialist(UserLoginDto userLoginDto) {
-		UserLogin userLogin = userLoginRepository.findByUsername(userLoginDto.getUsername());
-		if (userLogin == null)
+	public int loginSpecialist(UserDto userLoginDto) {
+		Users users = userRepository.findByUsername(userLoginDto.getUsername());
+		if (users == null)
 			return Constants.ERROR_EXIST;
-		if (!passwordEncoder.matches(userLoginDto.getPassword(), userLogin.getPassword()))
+		if (!passwordEncoder.matches(userLoginDto.getPassword(), users.getPassword()))
 			return Constants.ERROR_PASSWORD;
-		return userLogin.getSpecialist().getIdSpecialist();
+		return users.getSpecialist().getId();
 	}
 
 	@Override
 	public int restorePassword(String email) {
-		UserLogin userLogin = userLoginRepository.findByGuardianEmail(email);
-		if (userLogin == null)
+		Users users = userRepository.findByGuardianEmail(email);
+		if (users == null)
 			return Constants.ERROR_EXIST;
 		else {
 			String newPassword = RandomStringGenerator.getString();
-			userLogin.setPassword(passwordEncoder.encode(newPassword));
-			UserLogin userLoginSave = userLoginRepository.save(userLogin);
-			if (userLoginSave == null)
+			users.setPassword(passwordEncoder.encode(newPassword));
+			Users usersSave = userRepository.save(users);
+			if (usersSave == null)
 				return Constants.ERROR_BD;
 			else {
 				boolean send = sendEmailTool(email, newPassword);

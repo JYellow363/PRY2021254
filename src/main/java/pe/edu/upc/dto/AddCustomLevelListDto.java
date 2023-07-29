@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCustomLevelListDto {
-	private int idChild;
+	private int id;
 	private String name;
 }

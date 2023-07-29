@@ -9,5 +9,5 @@ import pe.edu.upc.model.Child;
 
 @Repository
 public interface IChildRepository extends JpaRepository<Child, Integer>{
-	public List<Child> findByGuardianIdGuardian(int idGuardian);
+	public List<Child> findByGuardianId(int id);
 }

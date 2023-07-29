@@ -1,20 +1,21 @@
 package pe.edu.upc.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.dto.ObservationDto;
 import pe.edu.upc.dto.ObservationUpdateDto;
 import pe.edu.upc.dto.ResponseDto;
+import pe.edu.upc.model.Category;
 import pe.edu.upc.model.Observation;
 import pe.edu.upc.service.IObservationService;
 import pe.edu.upc.util.Constants;
 
-import java.util.List;
-
 @CrossOrigin
-@Api(tags="Observation")
+@Api(tags="Observations")
 @RestController
 @RequestMapping(path = "/observations")
 public class ObservationController {
@@ -22,17 +23,23 @@ public class ObservationController {
     @Autowired
     private IObservationService observationService;
 
-    @GetMapping(path = "/{idObservation}", produces = "application/json")
-    public ResponseEntity<?> listByIdGuardian(@PathVariable int idObservation) {
-        Observation observation = observationService.listById(idObservation);
+    @GetMapping(path = "/{id}", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 200, message="Ok", response = Observation.class)
+    })
+    public ResponseEntity<?> listByIdGuardian(@PathVariable int id) {
+        Observation observation = observationService.listById(id);
         return ResponseEntity.ok(observation);
     }
 
-    @PostMapping(path = "", consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 200, message="Ok", response = Observation.class)
+    })
     public ResponseEntity<?> create(@RequestBody ObservationDto observation) {
         int result = observationService.save(observation);
         ResponseDto response = new ResponseDto();
-        response.setIdResponse(result);
+        response.setId(result);
         if (result == Constants.ERROR_BD) {
             response.setMessage("Error al registrar");
             return ResponseEntity.ok(response);
@@ -42,12 +49,15 @@ public class ObservationController {
         }
     }
 
-    @PutMapping(path = "/{idObservation}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> update(@PathVariable int idObservation, @RequestBody ObservationUpdateDto observation) {
-        observation.setIdObservation(idObservation);
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 200, message="Ok", response = Observation.class)
+    })
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody ObservationUpdateDto observation) {
+        observation.setId(id);
         int result = observationService.update(observation);
         ResponseDto response = new ResponseDto();
-        response.setIdResponse(result);
+        response.setId(result);
         if (result == Constants.ERROR_BD) {
             response.setMessage("Error al actualizar");
             return ResponseEntity.ok(response);
@@ -57,11 +67,14 @@ public class ObservationController {
         }
     }
 
-    @DeleteMapping(path = "/{idObservation}", produces = "application/json")
-    public ResponseEntity<?> delete(@PathVariable int idObservation) {
+    @DeleteMapping(path = "/{id}", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 200, message="Ok", response = ResponseDto.class)
+    })
+    public ResponseEntity<?> delete(@PathVariable int id) {
         ResponseDto response = new ResponseDto();
-        int result = observationService.delete(idObservation);
-        response.setIdResponse(result);
+        int result = observationService.delete(id);
+        response.setId(result);
         if (result == Constants.SUCCESSFULLY)
             response.setMessage("Eliminación exitosa");
         else

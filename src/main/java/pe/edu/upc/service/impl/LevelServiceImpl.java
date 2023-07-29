@@ -21,13 +21,13 @@ public class LevelServiceImpl implements ILevelService {
 	}
 
 	@Override
-	public Level findById(int idLevel) {
-		return levelRepository.findById(idLevel).get();
+	public Level findById(int id) {
+		return levelRepository.findById(id).get();
 	}
 
 	@Override
-	public List<Level> findByIdTopic(int idTopic) {
-		return levelRepository.findByTopicIdTopic(idTopic);
+	public List<Level> findByIdTopic(int id) {
+		return levelRepository.findByTopicId(id);
 	}
 	
 	

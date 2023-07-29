@@ -1,27 +1,23 @@
 package pe.edu.upc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class UserLogin {
+@Table(name = "users")
+public class Users {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idUserLogin;
+	private int id;
 
 	@Column(length = 60, nullable = false)
 	private String username;
@@ -31,9 +27,9 @@ public class UserLogin {
 
 	private boolean isActive;
 
-	@OneToOne(mappedBy = "userLogin")
+	@OneToOne(mappedBy = "user")
 	private Guardian guardian;
 
-	@OneToOne(mappedBy = "userLogin")
+	@OneToOne(mappedBy = "user")
 	private Specialist specialist;
 }

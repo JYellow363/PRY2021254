@@ -9,5 +9,5 @@ import pe.edu.upc.model.Observation;
 
 @Repository
 public interface IObservationRepository extends JpaRepository<Observation, Integer> {
-	List<Observation> findByChildIdChild(int idChild);
+	List<Observation> findByChildId(int id);
 }

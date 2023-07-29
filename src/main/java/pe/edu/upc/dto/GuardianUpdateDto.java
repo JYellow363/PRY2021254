@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GuardianUpdateDto {
-	private int idGuardian;
+	private int id;
 	private String names;
 	private String lastNames;
 	private Date birthday;

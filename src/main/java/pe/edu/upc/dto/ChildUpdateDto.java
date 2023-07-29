@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChildUpdateDto {
-	private int idChild;
+	private int id;
 	private String names;
 	private String lastNames;
 	private Date birthday;

@@ -8,10 +8,10 @@ import pe.edu.upc.dto.LevelRecordDto;
 import pe.edu.upc.model.LevelRecord;
 
 public interface ILevelRecordService {
-	List<LevelRecordDto> listByChildrenForLevel(int idChild, int idTopic);
-	List<LevelRecordDto> listByChildrenForTopic(int idChild, int idCategory);
-	List<LevelRecordDto> listByChildrenForCategory(int idChild);
+	List<LevelRecordDto> listByChildrenForLevel(int id, int idTopic);
+	List<LevelRecordDto> listByChildrenForTopic(int id, int idCategory);
+	List<LevelRecordDto> listByChildrenForCategory(int id);
 	int save(LevelRecordCreateDto levelRecord);
-	LevelRecord listById(int idLevelRecord);
-	List<LevelHistoricalRecordDto> listByIdChild(int idChild);
+	LevelRecord listById(int id);
+	List<LevelHistoricalRecordDto> listByIdChild(int id);
 }

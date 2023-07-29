@@ -14,7 +14,7 @@ import pe.edu.upc.model.Symptom;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChildDto {
-	private int idChild;
+	private int id;
 	private String names;
 	private String lastNames;
 	private Date birthday;

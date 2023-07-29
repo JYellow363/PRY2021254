@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SpecialistDto {
-	private int idSpecialist;
+	private int id;
 	private String names;
 	private String lastNames;
 	private String username;

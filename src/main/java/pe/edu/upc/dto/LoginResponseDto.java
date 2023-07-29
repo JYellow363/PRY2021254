@@ -15,11 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LoginResponseDto {
-	private int idResponse;
+	private int id;
 	private String token;
 	
 	private int idGuardian;
-	private int idUserLogin;
+	private int idUser;
 	private String username;
 	private String email;
 	private String names;
@@ -28,10 +28,10 @@ public class LoginResponseDto {
 	private boolean premium;
 	
 	public LoginResponseDto(int status, String token, GuardianDto guardianDto) {
-		setIdResponse(status);
+		setId(status);
 		setToken(token);
-		setIdGuardian(guardianDto.getIdGuardian());
-		setIdUserLogin(guardianDto.getIdUserLogin());
+		setIdGuardian(guardianDto.getId());
+		setIdUser(guardianDto.getIdUser());
 		setUsername(guardianDto.getUsername());
 		setEmail(guardianDto.getEmail());
 		setNames(guardianDto.getNames());

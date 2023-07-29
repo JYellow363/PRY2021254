@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.edu.upc.dto.*;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -23,11 +25,33 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SpringFoxConfig {
 
 	@Bean
-	public Docket api() {
+	public Docket api(TypeResolver typeResolver) {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
 				.securityContexts(Arrays.asList(securityContext())).securitySchemes(Arrays.asList(apiKey())).select()
 				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).paths(PathSelectors.any())
-				.build().apiInfo(apiInfo());
+				.build().additionalModels(
+						typeResolver.resolve(AddCustomLevelListDto.class),
+						typeResolver.resolve(AddLevelCustomDto.class),
+						typeResolver.resolve(AddLevelDto.class),
+						typeResolver.resolve(ChildCreateDto.class),
+						typeResolver.resolve(ChildDto.class),
+						typeResolver.resolve(ChildUpdateDto.class),
+						typeResolver.resolve(CustomLevelListUpdateDto.class),
+						typeResolver.resolve(GuardianCreateDto.class),
+						typeResolver.resolve(GuardianDto.class),
+						typeResolver.resolve(GuardianUpdateDto.class),
+						typeResolver.resolve(LevelHistoricalRecordDto.class),
+						typeResolver.resolve(LevelRecordCreateDto.class),
+						typeResolver.resolve(LevelRecordDto.class),
+						typeResolver.resolve(LoginResponseDto.class),
+						typeResolver.resolve(ObservationDto.class),
+						typeResolver.resolve(ObservationUpdateDto.class),
+						typeResolver.resolve(PaymentDto.class),
+						typeResolver.resolve(ResponseDto.class),
+						typeResolver.resolve(SpecialCategoryDto.class),
+						typeResolver.resolve(SpecialistDto.class),
+						typeResolver.resolve(UserDto.class)
+				).apiInfo(apiInfo());
 	}
 
 	private ApiInfo apiInfo() {

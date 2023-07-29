@@ -9,5 +9,5 @@ import pe.edu.upc.model.Level;
 
 @Repository
 public interface ILevelRepository extends JpaRepository<Level, Integer> {
-	List<Level> findByTopicIdTopic(int idTopic);
+	List<Level> findByTopicId(int id);
 }

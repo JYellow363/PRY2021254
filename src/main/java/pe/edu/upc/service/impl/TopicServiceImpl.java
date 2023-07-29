@@ -20,13 +20,13 @@ public class TopicServiceImpl implements ITopicService {
 	}
 
 	@Override
-	public Topic findById(int idTopic) {
-		return topicRepository.findById(idTopic).get();
+	public Topic findById(int id) {
+		return topicRepository.findById(id).get();
 	}
 
 	@Override
-	public List<Topic> findByIdCategory(int idCategory) {
-		return topicRepository.findByCategoryIdCategory(idCategory);
+	public List<Topic> findByIdCategory(int id) {
+		return topicRepository.findByCategoryId(id);
 	}
 
 }
