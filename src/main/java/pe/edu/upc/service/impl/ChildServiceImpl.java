@@ -38,7 +38,7 @@ public class ChildServiceImpl implements IChildService {
 	private JavaMailSender sender;
 
 	@Override
-	public List<ChildDto> findByGuardianIdGuardian(int id) {
+	public List<ChildDto> findByGuardianId(int id) {
 		List<ChildDto> children = convert(childRepository.findByGuardianId(id));
 		return children;
 	}
@@ -83,7 +83,7 @@ public class ChildServiceImpl implements IChildService {
 
 	@Transactional
 	@Override
-	public int delete(int id) {
+	public int deleteById(int id) {
 		try {
 			levelRecordRepository.deleteByChildId(id);
 			childRepository.deleteById(id);
@@ -95,7 +95,7 @@ public class ChildServiceImpl implements IChildService {
 
 	@Transactional
 	@Override
-	public int activateSpecialist(int id) {
+	public int activateChildSpecialist(int id) {
 		Specialist specialist = new Specialist();
 		Child child = childRepository.findById(id).get();
 		
@@ -196,7 +196,7 @@ public class ChildServiceImpl implements IChildService {
 	}
 
 	@Override
-	public CustomLevelList listCustomLevelListById(int id) {
+	public CustomLevelList listByCustomLevelListId(int id) {
 		return customLevelListRepository.findById(id).get();
 	}
 

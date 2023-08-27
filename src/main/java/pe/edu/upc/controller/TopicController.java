@@ -49,7 +49,7 @@ public class TopicController {
 			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = Level.class)
 	})
 	public ResponseEntity<?> listLevelsByIdTopic(@PathVariable int id) {
-		List<Level> levels = levelService.findByIdTopic(id);
+		List<Level> levels = levelService.findByTopicId(id);
 		return ResponseEntity.ok(levels);
 	}
 }

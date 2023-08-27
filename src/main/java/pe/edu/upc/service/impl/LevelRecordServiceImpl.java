@@ -122,7 +122,7 @@ public class LevelRecordServiceImpl implements ILevelRecordService {
 	}
 	
 	@Override
-	public List<LevelHistoricalRecordDto> listByIdChild(int id) {
+	public List<LevelHistoricalRecordDto> listByChildId(int id) {
 		List<LevelRecord> levelRecords = levelRecordRepository.findByChildIdOrderByDate(id);
 		List<LevelHistoricalRecordDto> levelHistoricalRecordsDto = new ArrayList<LevelHistoricalRecordDto>();
 		for (LevelRecord levelRecord: levelRecords) {

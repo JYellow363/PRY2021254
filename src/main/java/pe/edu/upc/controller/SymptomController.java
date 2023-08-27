@@ -37,7 +37,7 @@ public class SymptomController {
 			@ApiResponse(code = 200, message="Ok", response = Symptom.class)
 	})
 	public ResponseEntity<?> listByIdSymptom(@PathVariable int id) {
-		Symptom symptom = symptomService.listByIdSymptom(id);
+		Symptom symptom = symptomService.listBySymptomId(id);
 		return ResponseEntity.ok(symptom);
 	}
 }

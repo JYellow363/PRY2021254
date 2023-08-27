@@ -50,7 +50,7 @@ public class CategoryController {
 			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = Topic.class)
 	})
 	public ResponseEntity<?> listTopicsByIdCategory(@PathVariable int id) {
-		List<Topic> topics = topicService.findByIdCategory(id);
+		List<Topic> topics = topicService.findByCategoryId(id);
 		return ResponseEntity.ok(topics);
 	}
 }

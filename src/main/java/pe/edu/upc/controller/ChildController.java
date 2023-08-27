@@ -107,7 +107,7 @@ public class ChildController {
 	})
 	public ResponseEntity<?> delete(@PathVariable int id) {
 		ResponseDto response = new ResponseDto();
-		int result = childService.delete(id);
+		int result = childService.deleteById(id);
 		response.setId(result);
 		if (result == Constants.SUCCESSFULLY)
 			response.setMessage("Eliminación exitosa");
@@ -122,7 +122,7 @@ public class ChildController {
 	})
 	public ResponseEntity<?> createSpecialist(@PathVariable int id) {
 		ResponseDto response = new ResponseDto();
-		int result = childService.activateSpecialist(id);
+		int result = childService.activateChildSpecialist(id);
 		response.setId(result);
 		if (result == Constants.ERROR_BD) {
 			response.setMessage("Error al activar especialista");
@@ -134,7 +134,7 @@ public class ChildController {
 			response.setMessage("El niño ya tiene especialista creado");
 			return ResponseEntity.ok(response);
 		} else {
-			SpecialistDto specialist = specialistService.listByIdSpecialist(result);
+			SpecialistDto specialist = specialistService.listById(result);
 			return ResponseEntity.ok(specialist);
 		}
 	}
@@ -220,7 +220,7 @@ public class ChildController {
 			@ApiResponse(code = 200, message="Ok", response = CustomLevelList.class)
 	})
 	public ResponseEntity<?> listCustomLevelListById(@PathVariable int id, @PathVariable int idCustomLevelList) {
-		CustomLevelList customLevelList = childService.listCustomLevelListById(idCustomLevelList);
+		CustomLevelList customLevelList = childService.listByCustomLevelListId(idCustomLevelList);
 		return ResponseEntity.ok(customLevelList);
 	}
 
@@ -244,7 +244,7 @@ public class ChildController {
 			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = Observation.class)
 	})
 	public ResponseEntity<?> listObservationsByIdChild(@PathVariable int id) {
-		List<Observation> observations = observationService.listByIdChild(id);
+		List<Observation> observations = observationService.listByChildId(id);
 		return ResponseEntity.ok(observations);
 	}
 
@@ -253,7 +253,7 @@ public class ChildController {
 			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = LevelHistoricalRecordDto.class)
 	})
 	public ResponseEntity<?> listLevelRecordsByIdChild(@PathVariable int id) {
-		List<LevelHistoricalRecordDto> levelRecords = levelRecordService.listByIdChild(id);
+		List<LevelHistoricalRecordDto> levelRecords = levelRecordService.listByChildId(id);
 		return ResponseEntity.ok(levelRecords);
 	}
 
@@ -289,7 +289,7 @@ public class ChildController {
 			@ApiResponse(code = 200, message="Ok", response = SpecialistDto.class)
 	})
 	public ResponseEntity<?> listSpecialistByIdChild(@PathVariable int id) {
-		SpecialistDto specialist = specialistService.listByIdChild(id);
+		SpecialistDto specialist = specialistService.listByChildId(id);
 		return ResponseEntity.ok(specialist);
 	}
 }

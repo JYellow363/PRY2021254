@@ -6,6 +6,6 @@ import pe.edu.upc.dto.GuardianUpdateDto;
 
 public interface IGuardianService {
 	public int save(GuardianCreateDto guardianCreateDto);
-	public GuardianDto listByIdGuardian(int id);
+	public GuardianDto listById(int id);
 	int update(GuardianUpdateDto guardianUpdateDto);
 }

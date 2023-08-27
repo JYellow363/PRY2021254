@@ -26,7 +26,7 @@ public class CustomLevelListServiceImpl implements ICustomLevelListService {
 
     @Transactional
     @Override
-    public int addLevelToCustomLevelList(AddLevelCustomDto addLevelCustomListDto) {
+    public int addCustomLevelListLevel(AddLevelCustomDto addLevelCustomListDto) {
         CustomLevelList customLevelList = customLevelListRepository
                 .findById(addLevelCustomListDto.getIdCustomLevelList()).get();
         Level level = levelRepository.findById(addLevelCustomListDto.getIdLevel()).get();
@@ -46,7 +46,7 @@ public class CustomLevelListServiceImpl implements ICustomLevelListService {
 
     @Transactional
     @Override
-    public int deleteLevelinCustomLevelList(AddLevelCustomDto addLevelCustomListDto) {
+    public int deleteCustomLevelListLevel(AddLevelCustomDto addLevelCustomListDto) {
         CustomLevelList customLevelList = customLevelListRepository
                 .findById(addLevelCustomListDto.getIdCustomLevelList()).get();
         List<Level> newLevels = new ArrayList<Level>();
@@ -65,7 +65,7 @@ public class CustomLevelListServiceImpl implements ICustomLevelListService {
 
     @Transactional
     @Override
-    public int updateCustomLevelList(CustomLevelListUpdateDto customLevelListUpdateDto) {
+    public int updateCustomLevelListLevel(CustomLevelListUpdateDto customLevelListUpdateDto) {
         CustomLevelList customLevelList = customLevelListRepository.findById(customLevelListUpdateDto.getId()).get();
         customLevelList.setName(customLevelListUpdateDto.getName());
         CustomLevelList customLevelListSave = customLevelListRepository.save(customLevelList);

@@ -13,5 +13,5 @@ public interface ILevelRecordService {
 	List<LevelRecordDto> listByChildrenForCategory(int id);
 	int save(LevelRecordCreateDto levelRecord);
 	LevelRecord listById(int id);
-	List<LevelHistoricalRecordDto> listByIdChild(int id);
+	List<LevelHistoricalRecordDto> listByChildId(int id);
 }

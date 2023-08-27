@@ -7,5 +7,5 @@ import pe.edu.upc.model.Topic;
 public interface ITopicService {
 	public List<Topic> findAll();
 	public Topic findById(int id);
-	public List<Topic> findByIdCategory(int id);
+	public List<Topic> findByCategoryId(int id);
 }

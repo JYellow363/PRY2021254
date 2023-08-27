@@ -19,7 +19,7 @@ public class SpecialistServiceImpl implements ISpecialistService {
 	private ISpecialistRepository specialistRepository;
 
 	@Override
-	public SpecialistDto listByIdSpecialist(int id) {
+	public SpecialistDto listById(int id) {
 		Specialist specialist = specialistRepository.findById(id).get();
 		SpecialistDto specialistDto = convert(specialist);
 		specialistDto.setChild(convert(specialist.getChild()));
@@ -27,7 +27,7 @@ public class SpecialistServiceImpl implements ISpecialistService {
 	}
 
 	@Override
-	public SpecialistDto listByIdChild(int id) {
+	public SpecialistDto listByChildId(int id) {
 		SpecialistDto specialistDto = convert(specialistRepository.findByChildId(id));
 		return specialistDto;
 	}

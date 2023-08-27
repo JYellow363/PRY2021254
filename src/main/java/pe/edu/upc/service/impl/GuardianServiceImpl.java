@@ -50,7 +50,7 @@ public class GuardianServiceImpl implements IGuardianService {
 	}
 
 	@Override
-	public GuardianDto listByIdGuardian(int id) {
+	public GuardianDto listById(int id) {
 		Guardian guardian = guardianRepository.findById(id).get();
 		GuardianDto guardianDto = convert(guardian);
 		return guardianDto;

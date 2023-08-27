@@ -26,7 +26,7 @@ public class ObservationServiceImpl implements IObservationService {
 	private IChildRepository childRepository;
 
 	@Override
-	public List<Observation> listByIdChild(int id) {
+	public List<Observation> listByChildId(int id) {
 		List<Observation> observations = observationRepository.findByChildId(id);
 		return observations == null ? new ArrayList<Observation>() : observations;
 	}

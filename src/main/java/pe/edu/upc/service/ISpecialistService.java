@@ -3,6 +3,6 @@ package pe.edu.upc.service;
 import pe.edu.upc.dto.SpecialistDto;
 
 public interface ISpecialistService {
-	public SpecialistDto listByIdSpecialist(int id);
-	public SpecialistDto listByIdChild(int id);
+	public SpecialistDto listById(int id);
+	public SpecialistDto listByChildId(int id);
 }

@@ -31,7 +31,7 @@ public class GuardianController {
 			@ApiResponse(code = 200, message="Ok", response = GuardianDto.class)
 	})
 	public ResponseEntity<?> listByIdGuardian(@PathVariable int id) {
-		GuardianDto guardian = guardianService.listByIdGuardian(id);
+		GuardianDto guardian = guardianService.listById(id);
 		return ResponseEntity.ok(guardian);
 	}
 
@@ -40,7 +40,7 @@ public class GuardianController {
 			@ApiResponse(code = 200, message="Ok", responseContainer = "list", response = ChildDto.class)
 	})
 	public ResponseEntity<?> listChildrenByIdGuardian(@PathVariable int id) {
-		List<ChildDto> children = childService.findByGuardianIdGuardian(id);
+		List<ChildDto> children = childService.findByGuardianId(id);
 		return ResponseEntity.ok(children);
 	}
 
@@ -59,7 +59,7 @@ public class GuardianController {
 			response.setMessage("Error al registrar");
 			return ResponseEntity.ok(response);
 		} else {
-			GuardianDto guardianCreate = guardianService.listByIdGuardian(result);
+			GuardianDto guardianCreate = guardianService.listById(result);
 			return ResponseEntity.ok(guardianCreate);
 		}
 	}
@@ -80,7 +80,7 @@ public class GuardianController {
 			response.setMessage("Contraseña incorrecta");
 			return ResponseEntity.ok(response);
 		} else {
-			GuardianDto guardianUpdate = guardianService.listByIdGuardian(result);
+			GuardianDto guardianUpdate = guardianService.listById(result);
 			return ResponseEntity.ok(guardianUpdate);
 		}
 	}

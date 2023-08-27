@@ -25,7 +25,7 @@ public class TopicServiceImpl implements ITopicService {
 	}
 
 	@Override
-	public List<Topic> findByIdCategory(int id) {
+	public List<Topic> findByCategoryId(int id) {
 		return topicRepository.findByCategoryId(id);
 	}
 

@@ -7,7 +7,7 @@ import pe.edu.upc.dto.ObservationUpdateDto;
 import pe.edu.upc.model.Observation;
 
 public interface IObservationService {
-	List<Observation> listByIdChild(int id);
+	List<Observation> listByChildId(int id);
 	Observation listById(int id);
 	int save(ObservationDto observationDto);
 	int delete(int id);
