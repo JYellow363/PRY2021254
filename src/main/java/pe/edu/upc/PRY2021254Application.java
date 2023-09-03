@@ -1,5 +1,7 @@
 package pe.edu.upc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,11 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import pe.edu.upc.config.JWTAuthorizationFilter;
+import pe.edu.upc.util.InitData;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-public class PRY2021254Application {
+public class PRY2021254Application implements CommandLineRunner {
+
+	@Autowired
+	private InitData initData;
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -25,6 +31,11 @@ public class PRY2021254Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PRY2021254Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) {
+		initData.create();
 	}
 
 	@EnableWebSecurity

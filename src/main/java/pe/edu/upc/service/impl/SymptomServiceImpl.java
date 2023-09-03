@@ -24,6 +24,11 @@ public class SymptomServiceImpl implements ISymptomService {
 	public Symptom listByIdSymptom(int idSymptom) {
 		return symptomRepository.findById(idSymptom).get();
 	}
-	
-	
+
+	@Override
+	public Symptom save(Symptom symptom) {
+		return symptomRepository.save(symptom);
+	}
+
+
 }

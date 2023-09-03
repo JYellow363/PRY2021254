@@ -29,4 +29,9 @@ public class TopicServiceImpl implements ITopicService {
 		return topicRepository.findByCategoryIdCategory(idCategory);
 	}
 
+	@Override
+	public Topic save(Topic topic) {
+		return topicRepository.save(topic);
+	}
+
 }

@@ -7,4 +7,5 @@ import pe.edu.upc.model.Category;
 public interface ICategoryService {
 	public List<Category> findAll();
 	public Category findById(int idCategory);
+	public Category save(Category category);
 }

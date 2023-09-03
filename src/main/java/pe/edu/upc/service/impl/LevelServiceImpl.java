@@ -29,6 +29,11 @@ public class LevelServiceImpl implements ILevelService {
 	public List<Level> findByIdTopic(int idTopic) {
 		return levelRepository.findByTopicIdTopic(idTopic);
 	}
-	
-	
+
+	@Override
+	public Level save(Level level) {
+		return levelRepository.save(level);
+	}
+
+
 }

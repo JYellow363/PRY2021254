@@ -8,4 +8,5 @@ public interface ITopicService {
 	public List<Topic> findAll();
 	public Topic findById(int idTopic);
 	public List<Topic> findByIdCategory(int idCategory);
+	public Topic save(Topic topic);
 }
